@@ -1,4 +1,5 @@
 import getDate
+import yfinance as yf
 
 
 class Main:
@@ -6,3 +7,11 @@ class Main:
         self._stock = stock
         self._current_date = current_date
         self._past_date = past_date
+
+    def default_data(self):
+        data = yf.download(self._stock, start=self._past_date,
+                           end=self._current_date)
+        print(data)
+
+
+test1 = Main()

@@ -4,6 +4,8 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 
 # initialize parameters
+
+
 start_date = datetime(2023, 10, 23)
 end_date = datetime(2023, 10, 27)
 
