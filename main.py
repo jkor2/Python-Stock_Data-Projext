@@ -15,6 +15,7 @@ class StockAnalyzerController:
         self._stock_info = {}
         self._finances = []
         self._chart_value = "Close"
+        self._options_data = {}
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -67,6 +68,17 @@ class StockAnalyzerController:
 
         finance = yf.Ticker(self._stock).financials
         self._finances = finance
+
+    def fetch_options_info(self):
+        """
+        Fetches options chain calls/puts and updates the _options_data
+        data memeber
+        """
+
+        options_data_calls = yf.Ticker(self._stock).option_chain().calls
+        options_data_puts = yf.Ticker(self._stock).option_chain().calls
+        option_data = {'calls': options_data_calls, 'puts': options_data_puts}
+        self._options_data = option_data
 
     # SET Methods ------------------------------------------------------------------------------------
 
@@ -137,6 +149,13 @@ class StockAnalyzerController:
 
         return self._finances
 
+    def get_options_chain(self):
+        """
+        Returns options data
+        """
+
+        return self._options_data
+
     # Process Data, and properly store --------------------------------------------------------------
     def _process_and_set(self, data):
         """
@@ -154,9 +173,10 @@ class StockAnalyzerController:
 if __name__ == "__main__":
     controller = StockAnalyzerController()
     controller.fetch_data_range()
-    print(controller.get_active_data())
+    # print(controller.get_active_data())
     controller.set_current_stock("TSLA")
     controller.set_time_frame('max')
+    # controller.fetch_options_info()
     # controller.get_chart()
     # controller.fetch_financials()
     # print(controller.get_finances())
