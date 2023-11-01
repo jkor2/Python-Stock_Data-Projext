@@ -10,14 +10,26 @@ class Main:
         self._active_data = []
         self._chart_data = []
         self._ml_data = []
+        self._daily_time_frame = "5m"
 
-    def load_data(self):
+    def fetch_data_range(self):
         """
         Public Method  
-        Returns default data
+        Fetches stock data from a range of dates 
+        Returns - date, open, high, low, close, adj clos, volume
         """
         data = yf.download(self._stock, start=self._past_date,
                            end=self._current_date)
+        self._process_and_set(data)
+
+    def fetch_current_day_data(self):
+        """
+        Public method
+        Fetches stock data of current selected stock
+        5m timeframe by default
+        """
+        data = yf.download(
+            self._stock, interval=self._daily_time_frame, period='1d')
         self._process_and_set(data)
 
     def get_active_data(self):
@@ -38,5 +50,9 @@ class Main:
 
 
 main = Main()
-main.load_data()
+main.fetch_data_range()
 data = main.get_active_data()
+print(data)
+main.fetch_current_day_data()
+data = main.get_active_data()
+print(data)
