@@ -1,6 +1,7 @@
 import hardCoded
 import yfinance as yf
 import matplotlib.pyplot as plt
+from pprint import pprint
 plt.style.use('dark_background')
 
 
@@ -27,7 +28,7 @@ class StockAnalyzerController:
         data = yf.download(self._stock, period=self._time_frame)
         self._process_and_set(data)
 
-    def fetch_current_day_data(self):
+    def fetch_data_day(self):
         """
         Public method
         Fetches stock data of current selected stock
@@ -176,7 +177,10 @@ if __name__ == "__main__":
     # print(controller.get_active_data())
     controller.set_current_stock("TSLA")
     controller.set_time_frame('max')
+    controller.fetch_stock_information()
+    pprint(controller.get_stock_info())
     # controller.fetch_options_info()
+    # controller.get_options_chain()
     # controller.get_chart()
     # controller.fetch_financials()
     # print(controller.get_finances())
