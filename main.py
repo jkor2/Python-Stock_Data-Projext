@@ -106,7 +106,7 @@ class StockAnalyzerController:
 
         plt.figure(figsize=(10, 5))
         plt.title('{}: {}'.format(self._stock, self._time_frame))
-        plt.plot(self._active_data['Close'])
+        plt.plot(self._chart_data['Close'])
         plt.show()
 
     def get_finances(self):
@@ -122,8 +122,10 @@ class StockAnalyzerController:
         Will be used to process data and properly store it
         for active data, chart data, and ML data 
         """
-        self._active_data = data
         self._chart_data = data
+
+        self._active_data = data
+
         self._ml_data = data
 
 
@@ -134,5 +136,6 @@ if __name__ == "__main__":
     # print(controller.get_active_data())
     controller.set_current_stock("TSLA")
     controller.set_time_frame('max')
-    # controller.get_chart()
-    controller.fetch_financials()
+    controller.get_chart()
+    # controller.fetch_financials()
+    # print(controller.get_finances())
