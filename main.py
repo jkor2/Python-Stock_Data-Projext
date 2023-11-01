@@ -13,6 +13,7 @@ class StockAnalyzerController:
         self._ml_data = []
         self._daily_time_frame = "5m"
         self._stock_info = {}
+        self._finances = []
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -58,7 +59,16 @@ class StockAnalyzerController:
 
         self._stock_info = info_object
 
+    def fetch_financials(self):
+        """
+        Fetches the finances of the current stock selected
+        """
+
+        finance = yf.Ticker(self._stock).financials
+        self._finances = finance
+
     # SET Methods ------------------------------------------------------------------------------------
+
     def set_current_stock(self, stock):
         """
         Sets stock and updates data range data 
@@ -99,6 +109,13 @@ class StockAnalyzerController:
         plt.plot(self._active_data['Close'])
         plt.show()
 
+    def get_finances(self):
+        """
+        Returns the companys financial information
+        """
+
+        return self._finances
+
     # Process Data, and properly store --------------------------------------------------------------
     def _process_and_set(self, data):
         """
@@ -114,7 +131,8 @@ class StockAnalyzerController:
 if __name__ == "__main__":
     controller = StockAnalyzerController()
     controller.fetch_data_range()
-    print(controller.get_active_data())
+    # print(controller.get_active_data())
     controller.set_current_stock("TSLA")
     controller.set_time_frame('max')
-    controller.get_chart()
+    # controller.get_chart()
+    controller.fetch_financials()
