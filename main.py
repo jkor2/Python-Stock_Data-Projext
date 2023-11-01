@@ -14,6 +14,7 @@ class StockAnalyzerController:
         self._daily_time_frame = "5m"
         self._stock_info = {}
         self._finances = []
+        self._chart_value = "Close"
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -84,6 +85,23 @@ class StockAnalyzerController:
 
         self.fetch_data_range()
 
+    def set_chart_value(self, value):
+        """
+        Updates chart value based on the first letter 
+        to ensure spelling does not cause any error
+        """
+
+        if value[0].upper() == "V":
+            self._chart_value = "Volume"
+        elif value[0].upper() == "O":
+            self._chart_value = "Open"
+        elif value[0].upper() == "H":
+            self._chart_value = "High"
+        elif value[0].upper() == "L":
+            self._chart_value = "Low"
+        elif value[0].upper() == "C":
+            self._chart_value = "Close"
+
     # GET Methods ------------------------------------------------------------------------------------
     def get_active_data(self):
         """
@@ -102,11 +120,14 @@ class StockAnalyzerController:
         """
         Takes in stock name, time frame, and data 
         and returns a chart
+
+        by default the chart will be built on close prices 
+
         """
 
         plt.figure(figsize=(10, 5))
         plt.title('{}: {}'.format(self._stock, self._time_frame))
-        plt.plot(self._chart_data['Close'])
+        plt.plot(self._chart_data[self._chart_value])
         plt.show()
 
     def get_finances(self):
@@ -133,9 +154,9 @@ class StockAnalyzerController:
 if __name__ == "__main__":
     controller = StockAnalyzerController()
     controller.fetch_data_range()
-    # print(controller.get_active_data())
+    print(controller.get_active_data())
     controller.set_current_stock("TSLA")
     controller.set_time_frame('max')
-    controller.get_chart()
+    # controller.get_chart()
     # controller.fetch_financials()
     # print(controller.get_finances())
