@@ -4,9 +4,6 @@ import matplotlib.pyplot as plt
 plt.style.use('dark_background')
 
 
-# Internal Imports
-
-
 class StockAnalyzerController:
     def __init__(self, stock="SPY"):
         self._stock = stock
