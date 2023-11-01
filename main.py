@@ -35,6 +35,12 @@ class Main:
         self._process_and_set(data)
 
     def fetch_stock_information(self):
+        """
+        Public method
+        Fetches stock information data
+        cleanses response to prevent errors
+        sets res to stock info data member
+        """
         info = yf.Ticker(self._stock).basic_info
         # Process Info
         info_object = {}
@@ -106,3 +112,5 @@ main.fetch_data_range()
 # print(main.get_active_data())
 # main.set_time_frame("ytd")
 # print(main.get_active_data())
+main.fetch_stock_information()
+print(main.get_stock_info())
