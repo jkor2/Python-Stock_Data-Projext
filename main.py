@@ -1,7 +1,10 @@
+import hardCoded
 import yfinance as yf
+import matplotlib.pyplot as plt
+plt.style.use('dark_background')
+
 
 # Internal Imports
-import hardCoded
 
 
 class StockAnalyzerController:
@@ -88,6 +91,12 @@ class StockAnalyzerController:
         """
         return self._stock_info
 
+    def get_chart(self):
+        plt.figure(figsize=(10, 5))
+        plt.title('{}: {}'.format(self._stock, self._time_frame))
+        plt.plot(self._active_data['Close'])
+        plt.show()
+
     # Process Data, and properly store --------------------------------------------------------------
     def _process_and_set(self, data):
         """
@@ -104,3 +113,6 @@ if __name__ == "__main__":
     controller = StockAnalyzerController()
     controller.fetch_data_range()
     print(controller.get_active_data())
+    controller.set_current_stock("TSLA")
+    controller.set_time_frame('max')
+    controller.get_chart()
