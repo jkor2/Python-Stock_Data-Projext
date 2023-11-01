@@ -4,7 +4,7 @@ import yfinance as yf
 import hardCoded
 
 
-class Main:
+class StockAnalyzerController:
     def __init__(self, stock="SPY"):
         self._stock = stock
         self._time_frame = '5d'
@@ -99,18 +99,8 @@ class Main:
         self._ml_data = data
 
 
-main = Main()
-main.fetch_data_range()
-# data = main.get_active_data()
-# print(data)
-# main.fetch_current_day_data()
-# data = main.get_active_data()
-# print(data)
-# main.fetch_stock_information()
-# print(main.get_stock_info())
-# main.set_current_stock("AAPL")
-# print(main.get_active_data())
-# main.set_time_frame("ytd")
-# print(main.get_active_data())
-main.fetch_stock_information()
-print(main.get_stock_info())
+# Usage example
+if __name__ == "__main__":
+    controller = StockAnalyzerController()
+    controller.fetch_data_range()
+    print(controller.get_active_data())
