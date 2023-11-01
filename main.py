@@ -167,6 +167,14 @@ class StockAnalyzerController:
 
         return self._options_data
 
+    def get_snapshot(self):
+        """
+        Updates the snapshot by calling the fetch method
+        returns the newly updated data
+        """
+        self.fetch_live_data()
+        return self._live_snapshot
+
     # Process Data, and properly store --------------------------------------------------------------
     def _process_and_set(self, data):
         """
