@@ -89,6 +89,11 @@ class StockAnalyzerController:
         return self._stock_info
 
     def get_chart(self):
+        """
+        Takes in stock name, time frame, and data 
+        and returns a chart
+        """
+
         plt.figure(figsize=(10, 5))
         plt.title('{}: {}'.format(self._stock, self._time_frame))
         plt.plot(self._active_data['Close'])
