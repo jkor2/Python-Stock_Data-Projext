@@ -54,6 +54,10 @@ class Main:
 
         self._stock_info = info_object
 
+    def set_current_stock(self, stock):
+        self._stock = str(stock)
+        self.fetch_data_range()
+
     def get_active_data(self):
         """
         Public Method
@@ -86,3 +90,5 @@ main.fetch_data_range()
 # print(data)
 main.fetch_stock_information()
 print(main.get_stock_info())
+main.set_current_stock("AAPL")
+print(main.get_active_data())
