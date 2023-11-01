@@ -17,6 +17,7 @@ class StockAnalyzerController:
         self._finances = []
         self._chart_value = "Close"
         self._options_data = {}
+        self._live_snapshot = None
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -37,6 +38,15 @@ class StockAnalyzerController:
         data = yf.download(
             self._stock, interval=self._daily_time_frame, period='1d')
         self._process_and_set(data)
+
+    def fetch_live_data(self):
+        """
+        Fetches the current quote of stock
+        sets the snapshot to the value  
+        """
+        data = yf.Ticker('SPY')
+        live_data = data.history(period='1d')
+        self._live_snapshot = live_data
 
     def fetch_stock_information(self):
         """
@@ -178,9 +188,10 @@ if __name__ == "__main__":
     controller.set_current_stock("TSLA")
     controller.set_time_frame('max')
     controller.fetch_stock_information()
-    pprint(controller.get_stock_info())
+    # pprint(controller.get_stock_info())
     # controller.fetch_options_info()
     # controller.get_options_chain()
     # controller.get_chart()
     # controller.fetch_financials()
     # print(controller.get_finances())
+    print(controller.fetch_live_data())
