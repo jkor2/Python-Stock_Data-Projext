@@ -1,4 +1,3 @@
-import getDate
 import yfinance as yf
 
 # Internal Imports
@@ -6,24 +5,23 @@ import hardCoded
 
 
 class Main:
-    def __init__(self, stock="SPY", current_date=getDate.get_current_date(), past_date=getDate.seven_days_ago()):
+    def __init__(self, stock="SPY"):
         self._stock = stock
-        self._current_date = current_date
-        self._past_date = past_date
+        self._time_frame = '5d'
         self._active_data = []
         self._chart_data = []
         self._ml_data = []
         self._daily_time_frame = "5m"
         self._stock_info = {}
 
+    # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
         """
         Public Method  
         Fetches stock data from a range of dates 
         Returns - date, open, high, low, close, adj clos, volume
         """
-        data = yf.download(self._stock, start=self._past_date,
-                           end=self._current_date)
+        data = yf.download(self._stock, period=self._time_frame)
         self._process_and_set(data)
 
     def fetch_current_day_data(self):
@@ -54,10 +52,23 @@ class Main:
 
         self._stock_info = info_object
 
+    # SET Methods ------------------------------------------------------------------------------------
     def set_current_stock(self, stock):
+        """
+        Sets stock and updates data range data 
+        """
         self._stock = str(stock)
         self.fetch_data_range()
 
+    def set_time_frame(self, time_frame):
+        """
+        Sets time frame and updates the data based on the tf range
+        """
+        self._time_frame = time_frame
+
+        self.fetch_data_range()
+
+    # GET Methods ------------------------------------------------------------------------------------
     def get_active_data(self):
         """
         Public Method
@@ -71,6 +82,7 @@ class Main:
         """
         return self._stock_info
 
+    # Process Data, and properly store --------------------------------------------------------------
     def _process_and_set(self, data):
         """
         Will be used to process data and properly store it
@@ -88,7 +100,9 @@ main.fetch_data_range()
 # main.fetch_current_day_data()
 # data = main.get_active_data()
 # print(data)
-main.fetch_stock_information()
-print(main.get_stock_info())
-main.set_current_stock("AAPL")
-print(main.get_active_data())
+# main.fetch_stock_information()
+# print(main.get_stock_info())
+# main.set_current_stock("AAPL")
+# print(main.get_active_data())
+# main.set_time_frame("ytd")
+# print(main.get_active_data())
