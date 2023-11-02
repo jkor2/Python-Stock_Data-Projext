@@ -175,6 +175,12 @@ class StockAnalyzerController:
         self.fetch_live_data()
         return self._live_snapshot
 
+    def get_current_stock(self):
+        """
+        Returns the current stock
+        """
+        return self._stock
+
     # Process Data, and properly store --------------------------------------------------------------
     def _process_and_set(self, data):
         """
@@ -190,16 +196,17 @@ class StockAnalyzerController:
 
 # Usage example
 if __name__ == "__main__":
-    controller = StockAnalyzerController()
-    controller.fetch_data_range()
+    pass
+    # controller = StockAnalyzerController()
+    # controller.fetch_data_range()
     # print(controller.get_active_data())
-    controller.set_current_stock("TSLA")
-    controller.set_time_frame('max')
-    controller.fetch_stock_information()
+    # controller.set_current_stock("AAPL")
+    # controller.set_time_frame('ytd')
+    # controller.fetch_stock_information()
     # pprint(controller.get_stock_info())
     # controller.fetch_options_info()
     # controller.get_options_chain()
     # controller.get_chart()
     # controller.fetch_financials()
     # print(controller.get_finances())
-    print(controller.fetch_live_data())
+    # print(controller.fetch_live_data())
