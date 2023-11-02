@@ -181,6 +181,12 @@ class StockAnalyzerController:
         """
         return self._stock
 
+    def get_current_time_frame(self):
+        """
+        Returns current time frame 
+        """
+        return self._time_frame
+
     # Process Data, and properly store --------------------------------------------------------------
     def _process_and_set(self, data):
         """
