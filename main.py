@@ -3,7 +3,9 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+import numpy as np
 
 from pprint import pprint
 plt.style.use('dark_background')
@@ -200,7 +202,58 @@ class StockAnalyzerController:
         """
         return self._time_frame
 
+    # Predicitive Models ----------------------------------------------------------------------------
+
+    def linear_regression(self):
+        # Adjust time frame
+        self.set_time_frame("1y")
+        # Fetch Data
+        self.fetch_data_range()
+        data = self._active_data
+        close_prices = data['Close'].values
+
+        # Training data
+        # Use 400 days for training
+        train_data = close_prices[:(len(close_prices) - 30)]
+
+        # Testing data (last 100 days)
+        test_data = close_prices[-30:]
+
+        x_train = np.arange(1, len(train_data) + 1).reshape(-1, 1)
+        y_train = train_data.reshape(-1, 1)
+
+        model = LinearRegression()
+        model.fit(x_train, y_train)
+
+        x_test = np.arange(len(train_data) + 1, len(train_data) +
+                           len(test_data) + 1).reshape(-1, 1)
+
+    # Predict closing prices for the next 50 days
+    # Flatten the predicted_prices array
+        predicted_prices = model.predict(x_test).flatten()
+
+    # Use the entire dataset for all_days
+        all_days = np.arange(1, len(close_prices) + 1)
+
+    # Concatenate the actual closing prices and predicted closing prices
+        all_prices = np.concatenate([close_prices[:-30], predicted_prices])
+
+    # Visualize all 300 days of closing prices
+        plt.figure(figsize=(10, 6))
+        plt.plot(all_days[:len(close_prices) - 30], all_prices[:len(close_prices) - 30],
+                 label='Actual Closing Prices', color='blue')
+        plt.plot(all_days[len(close_prices) - 30:], all_prices[len(close_prices) -
+                                                               30:], label='Predicted Closing Prices', color='red')
+        plt.axvline(x=len(close_prices) - 30, color='gray', linestyle='--',
+                    linewidth=1)  # Separating actual and predicted prices
+        plt.xlabel('Day')
+        plt.ylabel('Closing Price')
+        plt.title('Actual vs. Predicted Closing Prices')
+        plt.legend()
+        plt.grid(True)
+        plt.show()
     # Process Data, and properly store --------------------------------------------------------------
+
     def _process_and_set(self, data):
         """
         Will be used to process data and properly store it
@@ -219,6 +272,7 @@ if __name__ == "__main__":
     controller = StockAnalyzerController()
     # controller.fetch_data_range()
     # print(controller.get_active_data())
+    controller.set_time_frame('max')
     controller.set_current_stock("AAPL")
     # controller.set_time_frame('ytd')
     # controller.fetch_stock_information()
@@ -226,6 +280,7 @@ if __name__ == "__main__":
     # controller.fetch_options_info()
     # controller.get_options_chain()
     # controller.get_chart()
-    controller.fetch_financials()
-    print(controller.get_finances())
+
+    controller.fetch_data_range()
+    controller.linear_regression()
     # print(controller.fetch_live_data())
