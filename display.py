@@ -144,9 +144,27 @@ def get_stock_info():
 # this is the function called when the button is clicked
 
 
-def btnClickFunction4():
+def get_chart():
     userInput = getInputBoxValue()
-    result_text.config(text='Data for Fetch4: ' + userInput)
+    # Create a frame to hold the chart and text area
+    # Adjust width and height as needed
+
+    global chart_canvas  # Declare chart_canvas as a global variable
+    chart_canvas = None
+
+    # Check if chart_canvas exists and destroy it if it does
+    if chart_canvas:
+        chart_canvas.get_tk_widget().destroy()
+
+    chart_canvas = data.get_chart(root)
+    chart_canvas.get_tk_widget().pack(fill=tk.NO, expand=False)
+
+    # result_text.config(text='Data for Fetch4: ' + userInput)
+
+
+def remove_chart():
+    if chart_canvas:
+        chart_canvas.get_tk_widget().destroy()
 
 
 # This is the section of code which creates a button
@@ -165,8 +183,11 @@ Button(root, text='Fetch Info', bg='#FAEBD7', font=('arial', 12, 'normal'),
 
 
 # This is the section of code which creates a button
-Button(root, text='Fetch4', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=btnClickFunction4).place(x=650, y=108)
+Button(root, text='Get Chart', bg='#FAEBD7', font=('arial', 12, 'normal'),
+       command=get_chart).place(x=650, y=108)
+# This is the section of code which creates a button
+Button(root, text='Remove Chart', bg='#FAEBD7', font=('arial', 12, 'normal'),
+       command=remove_chart).place(x=750, y=108)
 
 root.resizable(False, False)
 scrollbar = Scrollbar(root, orient="vertical")

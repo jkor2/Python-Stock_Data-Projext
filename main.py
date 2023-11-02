@@ -1,6 +1,10 @@
 import hardCoded
 import yfinance as yf
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+
 from pprint import pprint
 plt.style.use('dark_background')
 
@@ -140,7 +144,7 @@ class StockAnalyzerController:
         """
         return self._stock_info
 
-    def get_chart(self):
+    def get_chart(self, root):
         """
         Takes in stock name, time frame, and data 
         and returns a chart
@@ -149,10 +153,18 @@ class StockAnalyzerController:
 
         """
 
-        plt.figure(figsize=(10, 5))
-        plt.title('{}: {}'.format(self._stock, self._time_frame))
-        plt.plot(self._chart_data[self._chart_value])
-        plt.show()
+        fig = Figure(figsize=(8, 5))
+        ax = fig.add_subplot(1, 1, 1)
+        ax.set_title('{}: {}'.format(self._stock, self._time_frame))
+        ax.plot(self._chart_data[self._chart_value])
+
+        canvas = FigureCanvasTkAgg(fig, master=root)  # A tk.DrawingArea.
+        canvas_widget = canvas.get_tk_widget()
+        canvas_widget.place(x=150, y=200)  # Adjust the coordinates as needed
+
+        canvas.draw()
+
+        return canvas
 
     def get_finances(self):
         """
