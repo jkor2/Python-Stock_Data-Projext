@@ -204,7 +204,7 @@ class StockAnalyzerController:
 
     # Predicitive Models ----------------------------------------------------------------------------
 
-    def linear_regression(self):
+    def linear_regression(self, root):
         """
         Takes in a stock, adjust time frame to 1y
         trains based on past 220 days 
@@ -247,19 +247,27 @@ class StockAnalyzerController:
         all_prices = np.concatenate([close_prices[:-30], predicted_prices])
 
     # Visualize all 250 days of closing prices
-        plt.figure(figsize=(10, 6))
-        plt.plot(all_days[:len(close_prices) - 30], all_prices[:len(close_prices) - 30],
-                 label='Actual Closing Prices', color='blue')
-        plt.plot(all_days[len(close_prices) - 30:], all_prices[len(close_prices) -
-                                                               30:], label='Predicted Closing Prices', color='red')
-        plt.axvline(x=len(close_prices) - 30, color='gray', linestyle='--',
-                    linewidth=1)  # Separating actual and predicted prices
-        plt.xlabel('Day')
-        plt.ylabel('Closing Price')
-        plt.title('Actual vs. Predicted Closing Prices')
-        plt.legend()
-        plt.grid(True)
-        plt.show()
+        fig = Figure(figsize=(8, 5))
+        ax = fig.add_subplot(1, 1, 1)
+        ax.plot(all_days[:len(close_prices) - 30], all_prices[:len(close_prices) - 30],
+                label='Actual Closing Prices', color='blue')
+        ax.plot(all_days[len(close_prices) - 30:], all_prices[len(close_prices) -
+                30:], label='Predicted Closing Prices', color='red')
+        # Separating actual and predicted prices
+        ax.axvline(x=len(close_prices) - 30, color='gray',
+                   linestyle='--', linewidth=1)
+        ax.set_xlabel('Day')
+        ax.set_ylabel('Closing Price')
+        ax.set_title('Actual vs. Predicted Closing Prices')
+        ax.legend()
+
+        canvas = FigureCanvasTkAgg(fig, master=root)  # A tk.DrawingArea.
+        canvas_widget = canvas.get_tk_widget()
+        canvas_widget.place(x=150, y=200)  # Adjust the coordinates as needed
+
+        canvas.draw()
+
+        return canvas
 
     # Process Data, and properly store --------------------------------------------------------------
 

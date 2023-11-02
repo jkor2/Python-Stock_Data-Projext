@@ -162,6 +162,7 @@ def get_chart():
     Gets stock chart from main class handling API
     """
     global chart_canvas  # Declare chart_canvas as a global variable
+
     # Check if chart_canvas exists and destroy it if it does
     if chart_canvas:
         chart_canvas.get_tk_widget().destroy()
@@ -180,9 +181,35 @@ def remove_chart():
         chart_canvas.get_tk_widget().destroy()
 
 
+def run_regression_mode():
+    """
+    Runs the regression model
+    returns a fugure dispalying
+    predictions for next 50 days
+    """
+
+    global chart_canvas  # Declare chart_canvas as a global variable
+
+    if chart_canvas:  # Delete any canvas if present
+        chart_canvas.get_tk_widget().destroy()
+
+    # Update radio and time frame
+    data.set_time_frame("1y")
+    selected_option.set("1y")
+    curr_time_frame.config(text='Current Time Frame: ' +
+                           data.get_current_time_frame())
+
+    # Display figure from controller
+    chart_canvas = data.linear_regression(root)
+    chart_canvas.get_tk_widget().pack(fill=tk.NO, expand=False)
+
+
 # Xreates a button
 Button(root, text='Fetch Data', bg='#FAEBD7', font=('arial', 12, 'normal'),
        command=fetch_stock_data).place(x=450, y=108)
+
+Button(root, text='Fetch Data', bg='#FAEBD7', font=('arial', 12, 'normal'),
+       command=run_regression_mode).place(x=350, y=108)
 
 Button(root, text='Set Stock', bg='#FAEBD7', font=('arial', 8, 'normal'),
        command=set_current_stock).place(x=600, y=47)
