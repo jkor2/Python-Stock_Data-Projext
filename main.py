@@ -205,6 +205,11 @@ class StockAnalyzerController:
     # Predicitive Models ----------------------------------------------------------------------------
 
     def linear_regression(self):
+        """
+        Takes in a stock, adjust time frame to 1y
+        trains based on past 220 days 
+        predicst the next 30 days 
+        """
         # Adjust time frame
         self.set_time_frame("1y")
         # Fetch Data
