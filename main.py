@@ -261,6 +261,7 @@ class StockAnalyzerController:
         ax.set_title('Actual vs. Predicted Closing Prices')
         ax.legend()
 
+        # Creating canvas and sending to display method
         canvas = FigureCanvasTkAgg(fig, master=root)  # A tk.DrawingArea.
         canvas_widget = canvas.get_tk_widget()
         canvas_widget.place(x=150, y=200)  # Adjust the coordinates as needed
