@@ -224,16 +224,20 @@ class StockAnalyzerController:
         # Testing data (last 30 days)
         test_data = close_prices[-30:]
 
+        # Even spaced array, 2d array reshape
         x_train = np.arange(1, len(train_data) + 1).reshape(-1, 1)
         y_train = train_data.reshape(-1, 1)
 
+        # Init linear regression model
         model = LinearRegression()
+        # Train model
         model.fit(x_train, y_train)
 
+        # Create evennly spaced array and reshape into 2d single collumn array
         x_test = np.arange(len(train_data) + 1, len(train_data) +
                            len(test_data) + 1).reshape(-1, 1)
 
-    # Flatten the predicted_prices array
+    # Flatten the predicted_prices array - convert to 1D array
         predicted_prices = model.predict(x_test).flatten()
 
     # Use the entire dataset for all_days
@@ -242,7 +246,7 @@ class StockAnalyzerController:
     # Concatenate the actual closing prices and predicted closing prices
         all_prices = np.concatenate([close_prices[:-30], predicted_prices])
 
-    # Visualize all 300 days of closing prices
+    # Visualize all 250 days of closing prices
         plt.figure(figsize=(10, 6))
         plt.plot(all_days[:len(close_prices) - 30], all_prices[:len(close_prices) - 30],
                  label='Actual Closing Prices', color='blue')
@@ -256,6 +260,7 @@ class StockAnalyzerController:
         plt.legend()
         plt.grid(True)
         plt.show()
+
     # Process Data, and properly store --------------------------------------------------------------
 
     def _process_and_set(self, data):
