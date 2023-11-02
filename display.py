@@ -13,19 +13,23 @@ data = main.StockAnalyzerController()
 
 
 def getInputBoxValue():
+    """
+    Gets the users input from the text field
+    """
     userInput = Stock.get()
     return userInput
 
 
+# Init root
 root = Tk()
 
-# This is the section of code which creates the main window
+# cXeates the main window
 root.geometry('1000x750')
 root.configure(background='#F0F8FF')
 root.title('Main')
 
 
-# This is the section of code which creates the a label
+# Creates the Lables
 Label(root, text='Stock Analysis', bg='#F0F8FF',
       font=('arial', 12, 'normal')).place(x=450, y=25)
 
@@ -41,7 +45,7 @@ curr_time_frame = Label(root, text='Current Time Frame: ' + data.get_current_tim
                         font=('arial', 10, 'normal'))
 curr_time_frame.place(x=500, y=75)
 
-# This is the section of code which creates a text input box
+# Creates a text input box
 Stock = Entry(root)
 Stock.insert(0, "SPY")  # Set default text to "SPY"
 Stock.place(x=450, y=50)
@@ -54,16 +58,20 @@ result_text.place(x=150, y=200)
 
 # Create a vertical scrollbar for the Text widget
 scrollbar = Scrollbar(root, command=result_text.yview)
-scrollbar.place(x=100, y=205, height=475)
+scrollbar.place(x=900, y=205, height=475)
 result_text.config(yscrollcommand=scrollbar.set)
 
 
+# Making 5d the dafault time frame
 selected_option = StringVar(value="5d")
 
 # Function to handle radio button selection
 
 
 def radio_button_selected():
+    """
+    Handles selection and updates the time frame lable
+    """
     data.set_time_frame(selected_option.get())
 
     curr_time_frame.config(text='Current Time Frame: ' +
@@ -104,21 +112,23 @@ radio_button9.place(x=50, y=340)
 
 
 def fetch_stock_data():
-    userInput = getInputBoxValue()
+    """
+    Loads the stock data
+    """
+
     data.fetch_data_range()
     active_data = data.get_active_data()
 
-    # Convert the active_data (assumed to be a pandas DataFrame) to a formatted string
     formatted_data = active_data.to_string()
 
-    # Update the content of the Text widget with the formatted data
     result_text.delete(1.0, tk.END)  # Clear previous content
     result_text.insert(tk.END, formatted_data)  # Insert new content
 
-# this is the function called when the button is clicked
-
 
 def set_current_stock():
+    """
+    Sets the current stock and updates lable
+    """
     userInput = getInputBoxValue()
     data.set_current_stock(userInput)
     curr_stock.config(text='Current Stock: ' + data.get_current_stock())
@@ -128,6 +138,9 @@ def set_current_stock():
 
 
 def get_stock_info():
+    """
+    Gets stock info from main class handling API
+    """
     data.fetch_stock_information()
     data.fetch_financials()
     stock_info = data.get_stock_info()
@@ -141,17 +154,14 @@ def get_stock_info():
     result_text.insert(tk.END, stock_finances)
 
 
-# this is the function called when the button is clicked
+chart_canvas = None  # Init canvas so it is only None Once
 
 
 def get_chart():
-    userInput = getInputBoxValue()
-    # Create a frame to hold the chart and text area
-    # Adjust width and height as needed
-
+    """
+    Gets stock chart from main class handling API
+    """
     global chart_canvas  # Declare chart_canvas as a global variable
-    chart_canvas = None
-
     # Check if chart_canvas exists and destroy it if it does
     if chart_canvas:
         chart_canvas.get_tk_widget().destroy()
@@ -163,33 +173,29 @@ def get_chart():
 
 
 def remove_chart():
+    """
+    Removes chart canvas from the GUI
+    """
     if chart_canvas:
         chart_canvas.get_tk_widget().destroy()
 
 
-# This is the section of code which creates a button
+# Xreates a button
 Button(root, text='Fetch Data', bg='#FAEBD7', font=('arial', 12, 'normal'),
        command=fetch_stock_data).place(x=450, y=108)
 
-
-# This is the section of code which creates a button
 Button(root, text='Set Stock', bg='#FAEBD7', font=('arial', 8, 'normal'),
        command=set_current_stock).place(x=600, y=47)
 
-
-# This is the section of code which creates a button
 Button(root, text='Fetch Info', bg='#FAEBD7', font=('arial', 12, 'normal'),
        command=get_stock_info).place(x=550, y=108)
 
-
-# This is the section of code which creates a button
 Button(root, text='Get Chart', bg='#FAEBD7', font=('arial', 12, 'normal'),
        command=get_chart).place(x=650, y=108)
-# This is the section of code which creates a button
 Button(root, text='Remove Chart', bg='#FAEBD7', font=('arial', 12, 'normal'),
        command=remove_chart).place(x=750, y=108)
 
-root.resizable(False, False)
-scrollbar = Scrollbar(root, orient="vertical")
+root.resizable(False, False)  # Makes not resiazble
+scrollbar = Scrollbar(root, orient="vertical")  # Init vertical scroll bar
 
 root.mainloop()
