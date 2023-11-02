@@ -214,14 +214,14 @@ class StockAnalyzerController:
         self.set_time_frame("1y")
         # Fetch Data
         self.fetch_data_range()
-        data = self._active_data
+        data = self._ml_data
         close_prices = data['Close'].values
 
         # Training data
-        # Use 400 days for training
+        # Use 220 days for training
         train_data = close_prices[:(len(close_prices) - 30)]
 
-        # Testing data (last 100 days)
+        # Testing data (last 30 days)
         test_data = close_prices[-30:]
 
         x_train = np.arange(1, len(train_data) + 1).reshape(-1, 1)
@@ -233,7 +233,6 @@ class StockAnalyzerController:
         x_test = np.arange(len(train_data) + 1, len(train_data) +
                            len(test_data) + 1).reshape(-1, 1)
 
-    # Predict closing prices for the next 50 days
     # Flatten the predicted_prices array
         predicted_prices = model.predict(x_test).flatten()
 
