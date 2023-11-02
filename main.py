@@ -77,7 +77,8 @@ class StockAnalyzerController:
         Fetches the finances of the current stock selected
         """
 
-        finance = yf.Ticker(self._stock).financials
+        finance = yf.Ticker(self._stock).balancesheet
+        print(finance)
         self._finances = finance
 
     def fetch_options_info(self):
@@ -202,17 +203,17 @@ class StockAnalyzerController:
 
 # Usage example
 if __name__ == "__main__":
-    pass
-    # controller = StockAnalyzerController()
+
+    controller = StockAnalyzerController()
     # controller.fetch_data_range()
     # print(controller.get_active_data())
-    # controller.set_current_stock("AAPL")
+    controller.set_current_stock("AAPL")
     # controller.set_time_frame('ytd')
     # controller.fetch_stock_information()
     # pprint(controller.get_stock_info())
     # controller.fetch_options_info()
     # controller.get_options_chain()
     # controller.get_chart()
-    # controller.fetch_financials()
-    # print(controller.get_finances())
+    controller.fetch_financials()
+    print(controller.get_finances())
     # print(controller.fetch_live_data())

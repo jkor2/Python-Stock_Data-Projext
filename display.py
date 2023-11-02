@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+from tabulate import tabulate
+import pprint
+
 
 import main
 
@@ -46,12 +49,12 @@ Stock.place(x=450, y=50)
 
 # Create a Text widget for displaying the result
 result_text = Text(root, bg='#F0F8FF', font=(
-    'arial', 10), wrap='word', height=30, width=90)
-result_text.place(x=200, y=200)
+    'arial', 10), wrap='word', height=30, width=110)
+result_text.place(x=150, y=200)
 
 # Create a vertical scrollbar for the Text widget
 scrollbar = Scrollbar(root, command=result_text.yview)
-scrollbar.place(x=840, y=205, height=475)
+scrollbar.place(x=100, y=205, height=475)
 result_text.config(yscrollcommand=scrollbar.set)
 
 
@@ -124,10 +127,19 @@ def set_current_stock():
 # this is the function called when the button is clicked
 
 
-def set_current_time_frame():
-    userInput = getInputBoxValue()
-    data.set_time_frame(userInput)
-    result_text.config(text='Data for Fetch3: ' + userInput)
+def get_stock_info():
+    data.fetch_stock_information()
+    data.fetch_financials()
+    stock_info = data.get_stock_info()
+    stock_finances = data.get_finances()
+    result_text.delete(1.0, tk.END)
+    result_text.insert(tk.END, 'Basic Information\n')
+    for key, value in stock_info.items():
+        # Insert new content with a newline character after each item
+        result_text.insert(tk.END, f'{key}: {value}\n')
+    result_text.insert(tk.END, 'Balance Sheet\n')
+    result_text.insert(tk.END, stock_finances)
+
 
 # this is the function called when the button is clicked
 
@@ -148,8 +160,8 @@ Button(root, text='Set Stock', bg='#FAEBD7', font=('arial', 8, 'normal'),
 
 
 # This is the section of code which creates a button
-Button(root, text='Fetch3', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=set_current_time_frame).place(x=550, y=108)
+Button(root, text='Fetch Info', bg='#FAEBD7', font=('arial', 12, 'normal'),
+       command=get_stock_info).place(x=550, y=108)
 
 
 # This is the section of code which creates a button
