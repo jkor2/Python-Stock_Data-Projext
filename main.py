@@ -388,6 +388,27 @@ class StockAnalyzerController:
 
         return canvas
 
+    # Indicators -----------------------------------------------------------------------------------
+    def calculate_SMA(self):
+        pass
+
+    def calculate_EMA(self):
+        pass
+
+    def calculate_RSI(self):
+        pass
+
+    def calculate_MACD(self):
+        pass
+
+    def calculate_Bollinger_Bands(self):
+        pass
+
+    def calculate_ATR(self):
+        pass
+
+    def calculate_Stochastic_Oscillator(self):
+        pass
     # Process Data, and properly store --------------------------------------------------------------
 
     def _process_and_set(self, data):
