@@ -1,43 +1,43 @@
 Breakdown
 
-Fetching and Processing Data:
+1. Fetching and Processing Data:
 The code fetches historical stock data for the specified stock symbol 
 using the yfinance library. The data consists of daily closing prices 
 for the last 5 years. The fetched data is then stored in the _ml_data 
 variable.
 
-Data Preparation:
+2. Data Preparation:
 The closing prices from the fetched data are extracted and stored 
 in the closing_prices variable. The training data is created by 
 excluding the last day's closing price, resulting in a dataset representing 
 the last 30 days of historical closing prices.
 
-Feature and Target Creation:
+3. Feature and Target Creation:
 Features (x_train) are created as a 1D array representing the days 
 from 1 to the length of the training data. The corresponding closing 
 prices are used as the target values (y_train).
 
-Random Forest Regression Model Initialization and Training:
+4. Random Forest Regression Model Initialization and Training:
 A RandomForestRegressor model is initialized with 100 trees and a random 
 seed of 1. The model is trained using the training data (x_train and y_train) 
 to learn the patterns in the historical closing prices.
 
-Prediction for the Next Day:
+5. Prediction for the Next Day:
 A feature for the next day (x_test) is created, and the trained model 
 predicts the stock price for the next day. The predicted price 
 is stored in the predicted_price variable.
 
-Visualization and Plotting:
+6. Visualization and Plotting:
 Matplotlib is used to create a plot with the last 30 days of training 
 data displayed in blue. The predicted price for the next day is shown 
 as a red point. The plot includes labels for the x-axis and y-axis, a 
 title, and a legend indicating the training data and the predicted price.
 
-Canvas Creation for Tkinter:
+7. Canvas Creation for Tkinter:
 The plot is embedded into a Tkinter canvas (FigureCanvasTkAgg) to be 
 integrated into a graphical user interface application. The canvas is 
 placed at specific coordinates within the Tkinter window.
 
-Return Value:
+8. Return Value:
 The canvas object containing the plot is returned, allowing it to be 
 displayed within a Tkinter application.
