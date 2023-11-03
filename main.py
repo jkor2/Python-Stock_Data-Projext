@@ -29,6 +29,7 @@ class StockAnalyzerController:
         self._chart_value = "Close"
         self._options_data = {}
         self._live_snapshot = None
+        self._sma = {}
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -217,7 +218,13 @@ class StockAnalyzerController:
         """
         return self._time_frame
 
+    def get_sma(self):
+        if self._sma != {}:
+            return self._sma
+        else:
+            return "Please calculate SMA's"
     # Predicitive Models ----------------------------------------------------------------------------
+
     def nearest_nehibor(self, root):
         """
         Utliszed library to implement KNeighbors Regression 
@@ -390,7 +397,32 @@ class StockAnalyzerController:
 
     # Indicators -----------------------------------------------------------------------------------
     def calculate_SMA(self):
-        pass
+        self.set_time_frame("1y")
+        self.fetch_data_range()
+        data = self._active_data
+        closes = data["Close"].values
+
+        three_day = sum(closes[-3:]) / 3
+        five_day = sum(closes[-5:]) / 5
+        ten_day = sum(closes[-10:]) / 10
+        twenty_one_day = sum(closes[-21:]) / 21
+        thirty_day = sum(closes[-30:]) / 30
+        fifty_day = sum(closes[-50:]) / 50
+        hundred_day = sum(closes[-100:]) / 100
+        two_hundered_day = sum(closes[-200:]) / 200
+
+        sma = {
+            "three_day_SMA": three_day,
+            "five_day_SMA": five_day,
+            "ten_day_SMA": ten_day,
+            "twenty_one_day_SMA": twenty_one_day,
+            "thirty_day_SMA": thirty_day,
+            "fifty_day_SMA": fifty_day,
+            "one_hundered_day_SMA": hundred_day,
+            "two_hundered_day_SMA": two_hundered_day,
+        }
+
+        self._sma = sma
 
     def calculate_EMA(self):
         pass
@@ -427,7 +459,7 @@ class StockAnalyzerController:
 if __name__ == "__main__":
 
     controller = StockAnalyzerController()
-    # controller.fetch_data_range()
+    controller.fetch_data_range()
     # print(controller.get_active_data())
     # controller.set_time_frame('max')
     # controller.set_current_stock("SPY")
@@ -437,7 +469,8 @@ if __name__ == "__main__":
     # controller.fetch_options_info()
     # controller.get_options_chain()
     # controller.get_chart()
-
+    # controller.calculate_SMA()
+    # controller.get_sma()
     # controller.fetch_data_range()
     # controller.linear_regression("root")
     # print(controller.fetch_live_data())
