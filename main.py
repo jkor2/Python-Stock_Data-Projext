@@ -6,6 +6,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.metrics import mean_squared_error
 
 import numpy as np
 
@@ -215,6 +218,30 @@ class StockAnalyzerController:
         return self._time_frame
 
     # Predicitive Models ----------------------------------------------------------------------------
+    def nearest_nehibor(self):
+        # Pull Data
+        data = yf.Ticker(self._stock).history(
+            interval="1d", period='5y')
+        self.set_ml_data(data)
+        data = self._ml_data
+        close_prices = data['Close'].values
+        
+        # init features ** All except the last value **
+        X = close_prices[:-1].reshape(-1, 1)
+        y = close_prices[1:]
+
+        # init nearest neighbor model
+        model = KNeighborsRegressor(n_neighbors=3)
+        # Train model
+        model.fit(X, y)
+
+        # Get previous day close 
+        previous_day_close = close_prices[-1].reshape(1, -1)
+
+        # predict based on previous day close (returns 1 val)
+        predictions = model.predict(previous_day_close)
+        print(predictions)
+
     def random_forest_regression(self, root):
         """
         Feteches data based on current stock
@@ -362,5 +389,5 @@ if __name__ == "__main__":
     # controller.get_chart()
 
     controller.fetch_data_range()
-    controller.random_forest_regression()
+    controller.nearest_nehibor()
     # print(controller.fetch_live_data())
