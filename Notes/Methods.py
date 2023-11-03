@@ -15,7 +15,7 @@ end_date = datetime(2023, 10, 27)
 
 # Get Live Data on Ticker
 # data = yf.Ticker('SPY')
-# live_data = data.history(period='1d')
+# # live_data = data.history(interval="1m", period='5d')
 # print(live_data)
 
 # Get information about Apple Inc. (AAPL) . method is interchanable
