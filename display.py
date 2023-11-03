@@ -226,23 +226,23 @@ def run_random_forest():
 
 # Xreates a button
 Button(root, text='Fetch Data', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=fetch_stock_data).place(x=450, y=108)
+       command=fetch_stock_data).place(x=700, y=10)
 
 Button(root, text='Linear Regression', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=run_regression_mode).place(x=350, y=108)
+       command=run_regression_mode).place(x=200, y=10)
 Button(root, text='Random Forest', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=run_random_forest).place(x=250, y=108)
+       command=run_random_forest).place(x=205, y=50)
 
 Button(root, text='Set Stock', bg='#FAEBD7', font=('arial', 8, 'normal'),
        command=set_current_stock).place(x=600, y=47)
 
 Button(root, text='Fetch Info', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=get_stock_info).place(x=550, y=108)
+       command=get_stock_info).place(x=820, y=10)
 
 Button(root, text='Get Chart', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=get_chart).place(x=650, y=108)
+       command=get_chart).place(x=400, y=108)
 Button(root, text='Remove Chart', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=remove_chart).place(x=750, y=108)
+       command=remove_chart).place(x=500, y=108)
 
 root.resizable(False, False)  # Makes not resiazble
 scrollbar = Scrollbar(root, orient="vertical")  # Init vertical scroll bar
