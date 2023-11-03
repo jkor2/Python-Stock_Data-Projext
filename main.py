@@ -30,6 +30,7 @@ class StockAnalyzerController:
         self._options_data = {}
         self._live_snapshot = None
         self._sma = {}
+        self._ema = {}
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -235,7 +236,16 @@ class StockAnalyzerController:
         if self._sma != {}:
             return self._sma
         else:
-            return "Please calculate SMA's"
+            return "Please calculate SMA's before retrival"
+
+    def get_ema(self):
+        """
+        Returns ema if there is data stored within it 
+        """
+        if self._ema != {}:
+            return self._sma
+        else:
+            return "Please calculate the EMA's before retrival"
     # Predicitive Models ----------------------------------------------------------------------------
 
     def nearest_nehibor(self, root):
@@ -432,21 +442,51 @@ class StockAnalyzerController:
 
         # Storing in Object
         sma = {
-            "three_day_SMA": three_day,
-            "five_day_SMA": five_day,
-            "ten_day_SMA": ten_day,
-            "twenty_one_day_SMA": twenty_one_day,
-            "thirty_day_SMA": thirty_day,
-            "fifty_day_SMA": fifty_day,
-            "one_hundered_day_SMA": hundred_day,
-            "two_hundered_day_SMA": two_hundered_day,
+            "3": three_day,
+            "5": five_day,
+            "10": ten_day,
+            "21": twenty_one_day,
+            "30": thirty_day,
+            "50": fifty_day,
+            "100": hundred_day,
+            "200": two_hundered_day,
         }
 
         # Updating sma member
         self._sma = sma
 
     def calculate_EMA(self):
-        pass
+        """
+        Calcualtes the ema price for popular periods 
+        """
+
+        # Get and prep data
+        self.set_time_frame("1y")
+        self.fetch_data_range()
+        price_data = self._active_data
+        closes = price_data["Close"].values
+
+        # Calcualte sma's if not already calculated
+        if self._sma != {}:
+            pass
+        else:
+            self.calculate_SMA()
+
+        # Get all previous smas
+        prev_sma = self._sma
+        emas = [3, 5, 10, 21, 30, 50, 100, 200]
+
+        # Init objext to hold emas
+        ema_holder = {}
+
+        # Complete caluation on all days provided
+        for day in emas:
+            alpha = 2 / (day + 1)
+            ema_price = (1 - alpha) * prev_sma[str(day)] + alpha * closes[-1]
+            ema_holder[str(day)] = ema_price
+
+        # Update ema memeber
+        self._ema = ema_holder
 
     def calculate_RSI(self):
         pass
@@ -481,6 +521,7 @@ if __name__ == "__main__":
 
     controller = StockAnalyzerController()
     controller.fetch_data_range()
+    controller.calculate_EMA()
     # print(controller.get_active_data())
     # controller.set_time_frame('max')
     # controller.set_current_stock("SPY")
