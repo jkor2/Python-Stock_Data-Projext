@@ -218,14 +218,20 @@ class StockAnalyzerController:
         return self._time_frame
 
     # Predicitive Models ----------------------------------------------------------------------------
-    def nearest_nehibor(self):
+    def nearest_nehibor(self, root):
+        """
+        Utliszed library to implement KNeighbors Regression 
+        analysis 
+
+        returns next days predicetd value based on 5y of data
+        """
         # Pull Data
         data = yf.Ticker(self._stock).history(
             interval="1d", period='5y')
         self.set_ml_data(data)
         data = self._ml_data
         close_prices = data['Close'].values
-        
+
         # init features ** All except the last value **
         X = close_prices[:-1].reshape(-1, 1)
         y = close_prices[1:]
@@ -235,12 +241,35 @@ class StockAnalyzerController:
         # Train model
         model.fit(X, y)
 
-        # Get previous day close 
+        # Get previous day close
         previous_day_close = close_prices[-1].reshape(1, -1)
 
         # predict based on previous day close (returns 1 val)
-        predictions = model.predict(previous_day_close)
-        print(predictions)
+        predictionn = model.predict(previous_day_close)
+
+        fig = Figure(figsize=(8, 5))
+        ax = fig.add_subplot(1, 1, 1)
+
+        # Plot the last 30 days of training data
+        ax.plot(range(1, 31), y[-30:], label='Training Data', color='blue')
+
+        # Plot the predicted price for the next day
+        ax.scatter(31, predictionn, color='red', marker='o',
+                   label=f'Predicted Price: {predictionn[0]}')
+
+        ax.set_xlabel('Day')
+        ax.set_ylabel('Price')
+        ax.set_title(
+            'Stock Price Prediction for the Next Day using KNN Regressor')
+        ax.legend()
+
+        canvas = FigureCanvasTkAgg(fig, master=root)
+        canvas_widget = canvas.get_tk_widget()
+        canvas_widget.place(x=150, y=200)  # Adjust the coordinates as needed
+
+        canvas.draw()
+
+        return canvas
 
     def random_forest_regression(self, root):
         """
@@ -341,7 +370,7 @@ class StockAnalyzerController:
         ax.plot(all_days[:len(close_prices) - 30], all_prices[:len(close_prices) - 30],
                 label='Actual Closing Prices', color='blue')
         ax.plot(all_days[len(close_prices) - 30:], all_prices[len(close_prices) -
-                30:], label='Predicted Closing Prices', color='red')
+                30:], label=f'Predicted Closing Price: {predicted_prices[0]}', color='red')
         # Separating actual and predicted prices
         ax.axvline(x=len(close_prices) - 30, color='gray',
                    linestyle='--', linewidth=1)
@@ -379,8 +408,8 @@ if __name__ == "__main__":
     controller = StockAnalyzerController()
     # controller.fetch_data_range()
     # print(controller.get_active_data())
-    controller.set_time_frame('max')
-    controller.set_current_stock("SPY")
+    # controller.set_time_frame('max')
+    # controller.set_current_stock("SPY")
     # controller.set_time_frame('ytd')
     # controller.fetch_stock_information()
     # pprint(controller.get_stock_info())
@@ -388,6 +417,6 @@ if __name__ == "__main__":
     # controller.get_options_chain()
     # controller.get_chart()
 
-    controller.fetch_data_range()
-    controller.nearest_nehibor()
+    # controller.fetch_data_range()
+    # controller.linear_regression("root")
     # print(controller.fetch_live_data())

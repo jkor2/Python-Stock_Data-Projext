@@ -224,6 +224,27 @@ def run_random_forest():
     chart_canvas.get_tk_widget().pack(fill=tk.NO, expand=False)
 
 
+def run_nearest_neighbor():
+    """
+    calls nearest neightbor method from 
+    controller class
+
+    returns canvas to display on tkinter
+    """
+    global chart_canvas  # Declare chart_canvas as a global variable
+
+    if chart_canvas:  # Delete any canvas if present
+        chart_canvas.get_tk_widget().destroy()
+
+    data.set_time_frame("5y")
+    selected_option.set("5y")
+    curr_time_frame.config(text='Current Time Frame: ' +
+                           data.get_current_time_frame())
+
+    chart_canvas = data.nearest_nehibor(root)
+    chart_canvas.get_tk_widget().pack(fill=tk.NO, expand=False)
+
+
 # Xreates a button
 Button(root, text='Fetch Data', bg='#FAEBD7', font=('arial', 12, 'normal'),
        command=fetch_stock_data).place(x=700, y=10)
@@ -232,6 +253,9 @@ Button(root, text='Linear Regression', bg='#FAEBD7', font=('arial', 12, 'normal'
        command=run_regression_mode).place(x=200, y=10)
 Button(root, text='Random Forest', bg='#FAEBD7', font=('arial', 12, 'normal'),
        command=run_random_forest).place(x=205, y=50)
+
+Button(root, text='Nearest Neighbors', bg='#FAEBD7', font=('arial', 12, 'normal'),
+       command=run_nearest_neighbor).place(x=200, y=90)
 
 Button(root, text='Set Stock', bg='#FAEBD7', font=('arial', 8, 'normal'),
        command=set_current_stock).place(x=600, y=47)
