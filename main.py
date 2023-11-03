@@ -162,6 +162,10 @@ class StockAnalyzerController:
         by default the chart will be built on close prices 
 
         """
+        if self._time_frame == "1d":
+            small_range_data = yf.Ticker(self._stock).history(
+                interval="1m", period=self._time_frame)
+            self._chart_data = small_range_data
 
         fig = Figure(figsize=(8, 5))
         ax = fig.add_subplot(1, 1, 1)

@@ -25,12 +25,12 @@ root = Tk()
 
 # cXeates the main window
 root.geometry('1000x750')
-root.configure(background='#F0F8FF')
+root.configure(background='#FFFFFF')
 root.title('Main')
 
 
 # Creates the Lables
-Label(root, text='Stock Analysis', bg='#F0F8FF',
+Label(root, text='Stock Analysis', bg='#FFFFFF',
       font=('arial', 12, 'normal')).place(x=450, y=25)
 
 Label(root, text='Time Frame', bg='#F0F8FF',
