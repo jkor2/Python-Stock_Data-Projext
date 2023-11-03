@@ -228,7 +228,7 @@ class StockAnalyzerController:
         closing_prices = data["Close"].values
         training_data = closing_prices[:(len(closing_prices)-1)]
 
-        # Creating features and target for training data
+        # creating / formatting data
         x_train = np.arange(1, len(training_data) + 1).reshape(-1, 1)
         y_train = training_data.ravel()
 
@@ -248,8 +248,6 @@ class StockAnalyzerController:
                 label='Training Data', color='blue')
         ax.scatter(31, predicted_price, color='red', marker='o',
                    label=f'Predicted Price: {predicted_price}')
-
-        # Adding labels and legend
         ax.set_xlabel('Day')
         ax.set_ylabel('Price')
         ax.set_title(
