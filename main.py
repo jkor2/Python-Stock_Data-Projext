@@ -113,6 +113,9 @@ class StockAnalyzerController:
         self._stock = str(stock)
         self.fetch_data_range()
 
+        # Clears sma data when new stock is selected
+        self.clear_sma()
+
     def set_time_frame(self, time_frame):
         """
         Sets time frame and updates the data based on the tf range
@@ -143,6 +146,13 @@ class StockAnalyzerController:
         Sets the ML data
         """
         self._ml_data = data
+
+    def clear_sma(self):
+        """
+        Reseting sma 
+        """
+
+        self._sma = {}
 
     # GET Methods ------------------------------------------------------------------------------------
     def get_active_data(self):
@@ -219,6 +229,9 @@ class StockAnalyzerController:
         return self._time_frame
 
     def get_sma(self):
+        """
+        Returns sma if there is data stored within it 
+        """
         if self._sma != {}:
             return self._sma
         else:
@@ -397,11 +410,17 @@ class StockAnalyzerController:
 
     # Indicators -----------------------------------------------------------------------------------
     def calculate_SMA(self):
+        """
+        Calculates common SMA's based 
+        current stock selected 
+        """
+        # Updating data reqs
         self.set_time_frame("1y")
         self.fetch_data_range()
         data = self._active_data
         closes = data["Close"].values
 
+        # Calculating SMA's
         three_day = sum(closes[-3:]) / 3
         five_day = sum(closes[-5:]) / 5
         ten_day = sum(closes[-10:]) / 10
@@ -411,6 +430,7 @@ class StockAnalyzerController:
         hundred_day = sum(closes[-100:]) / 100
         two_hundered_day = sum(closes[-200:]) / 200
 
+        # Storing in Object
         sma = {
             "three_day_SMA": three_day,
             "five_day_SMA": five_day,
@@ -422,6 +442,7 @@ class StockAnalyzerController:
             "two_hundered_day_SMA": two_hundered_day,
         }
 
+        # Updating sma member
         self._sma = sma
 
     def calculate_EMA(self):
