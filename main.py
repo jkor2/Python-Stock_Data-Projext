@@ -5,6 +5,8 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+
 import numpy as np
 
 from pprint import pprint
@@ -132,6 +134,12 @@ class StockAnalyzerController:
         elif value[0].upper() == "C":
             self._chart_value = "Close"
 
+    def set_ml_data(self, data):
+        """
+        Sets the ML data
+        """
+        self._ml_data = data
+
     # GET Methods ------------------------------------------------------------------------------------
     def get_active_data(self):
         """
@@ -203,6 +211,59 @@ class StockAnalyzerController:
         return self._time_frame
 
     # Predicitive Models ----------------------------------------------------------------------------
+    def random_forest_regression(self, root):
+        """
+        Feteches data based on current stock
+        processes data, cleans data, trains model 
+        and returns a pedicted value 
+
+        then returns a drawn canvas for tkinter 
+        """
+
+        # Fetching and processing data
+        five_day_data = yf.Ticker(self._stock).history(
+            interval="1d", period='5y')
+        self.set_ml_data(five_day_data)
+        data = self._ml_data
+        closing_prices = data["Close"].values
+        training_data = closing_prices[:(len(closing_prices)-1)]
+
+        # Creating features and target for training data
+        x_train = np.arange(1, len(training_data) + 1).reshape(-1, 1)
+        y_train = training_data.ravel()
+
+        # Initializing and training the random forest regressor model
+        model = RandomForestRegressor(n_estimators=100, random_state=1)
+        model.fit(x_train, y_train)
+
+        # Creating a feature for the next day
+        x_test = np.array(len(training_data) + 1).reshape(-1, 1)
+
+        # Predicting price for the next day
+        predicted_price = model.predict(x_test)[0]
+
+        fig = Figure(figsize=(8, 5))
+        ax = fig.add_subplot(1, 1, 1)
+        ax.plot(range(1, 31), y_train[-30:],
+                label='Training Data', color='blue')
+        ax.scatter(31, predicted_price, color='red', marker='o',
+                   label=f'Predicted Price: {predicted_price}')
+
+        # Adding labels and legend
+        ax.set_xlabel('Day')
+        ax.set_ylabel('Price')
+        ax.set_title(
+            'Stock Price Prediction for the Next Day using RandomForestRegressor')
+        ax.legend()
+
+        # Creating canvas and returning
+        canvas = FigureCanvasTkAgg(fig, master=root)
+        canvas_widget = canvas.get_tk_widget()
+        canvas_widget.place(x=150, y=200)  # Adjust the coordinates as needed
+
+        canvas.draw()
+
+        return canvas
 
     def linear_regression(self, root):
         """
@@ -221,13 +282,12 @@ class StockAnalyzerController:
         # Use 220 days for training
         train_data = close_prices[:(len(close_prices) - 30)]
 
-        # Testing data (last 30 days)
+        # set test data (next 30 days)
         test_data = close_prices[-30:]
 
         # Even spaced array, 2d array reshape
         x_train = np.arange(1, len(train_data) + 1).reshape(-1, 1)
-        y_train = train_data.reshape(-1, 1)
-
+        y_train = train_data.reshape(-1, 1)  # 2d single column reshape
         # Init linear regression model
         model = LinearRegression()
         # Train model
@@ -291,7 +351,7 @@ if __name__ == "__main__":
     # controller.fetch_data_range()
     # print(controller.get_active_data())
     controller.set_time_frame('max')
-    controller.set_current_stock("AAPL")
+    controller.set_current_stock("SPY")
     # controller.set_time_frame('ytd')
     # controller.fetch_stock_information()
     # pprint(controller.get_stock_info())
@@ -300,5 +360,5 @@ if __name__ == "__main__":
     # controller.get_chart()
 
     controller.fetch_data_range()
-    controller.linear_regression()
+    controller.random_forest_regression()
     # print(controller.fetch_live_data())
