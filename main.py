@@ -31,6 +31,7 @@ class StockAnalyzerController:
         self._live_snapshot = None
         self._sma = {}
         self._ema = {}
+        self._rsi = {}
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -246,6 +247,27 @@ class StockAnalyzerController:
             return self._sma
         else:
             return "Please calculate the EMA's before retrival"
+
+    def get_RSI(self):
+        """
+        Runs the rsi method on listed periods 
+        stores result in object
+        """
+        # Get data now, so only need to fetch once
+        self.set_time_frame("1y")
+        self.fetch_data_range()
+
+        periods = [7, 9, 14, 21, 28, 50, 100, 200]
+        rsi_holder = {}
+
+        # Build objext
+        for i in periods:
+            rsi = self.calculate_RSI(i)
+            rsi_holder[str(i)] = rsi
+
+        # Set and return object
+        self._rsi = rsi_holder
+        return self._rsi
     # Predicitive Models ----------------------------------------------------------------------------
 
     def nearest_nehibor(self, root):
@@ -488,8 +510,49 @@ class StockAnalyzerController:
         # Update ema memeber
         self._ema = ema_holder
 
-    def calculate_RSI(self):
-        pass
+    def calculate_RSI(self, days):
+        """
+        Calcuates RSI on current stock selected 
+        """
+
+        # Get and set data
+        price_data = self._active_data
+        closes = price_data["Close"].values
+        amount_of_prices = closes[-int(days + 1):]
+
+        # Track gains and losses
+        net_gain = 0
+        net_loss = 0  # Needs to be pos
+
+        for index, close in enumerate(amount_of_prices):
+            if index == 0:
+                """
+                # Skip first index
+                # Will get last n + 1 close prices
+                # Skip first as the 'first' will be at index 1
+                # to find the 'first' gain / loss we need to subtract against this 0th day
+                """
+                pass
+            else:
+                # Calcuate whether net gain or loss
+                pl = close - amount_of_prices[index - 1]
+                if pl > 0:
+                    net_gain += pl
+                else:
+                    net_loss -= pl
+
+        # Get average gain / loss
+        average_gain = net_gain / (days)
+        average_loss = (net_loss / days)
+
+        # find realtive strength
+        relative_stength = average_gain / average_loss
+
+        # Find rsi
+        relative_stength_index = 100 - (100/(1+relative_stength))
+
+        # Return result
+        return relative_stength_index
 
     def calculate_MACD(self):
         pass
@@ -521,7 +584,7 @@ if __name__ == "__main__":
 
     controller = StockAnalyzerController()
     controller.fetch_data_range()
-    controller.calculate_EMA()
+    # controller.calculate_EMA()
     # print(controller.get_active_data())
     # controller.set_time_frame('max')
     # controller.set_current_stock("SPY")
@@ -536,3 +599,4 @@ if __name__ == "__main__":
     # controller.fetch_data_range()
     # controller.linear_regression("root")
     # print(controller.fetch_live_data())
+    print(controller.get_RSI())
