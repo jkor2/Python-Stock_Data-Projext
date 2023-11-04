@@ -1,6 +1,6 @@
 # Stock Analyzer Application
 
-** Still a work in progress, updates will be made as done. ** 
+**Still a work in progress, updates will be made as done.** 
 
 ## Description
 
