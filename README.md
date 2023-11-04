@@ -31,7 +31,7 @@ The **Stock Analyzer** application is a Python program designed to analyze stock
 
   - Calculate and display Simple Moving Averages (SMA) for various periods.
   - Calculate and display Exponential Moving Averages (EMA) for popular periods.
-  - Calculate Moving Average Convergence Divergence (MACD) and Signal Line.
+  - Calculate Moving Average Convergence Divergence (MACD).
   - Calculate Relative Strength Index (RSI).
 
 ## Usage
