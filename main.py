@@ -576,8 +576,14 @@ class StockAnalyzerController:
         Calcuates the MACD line of the last closing 
         price
         """
-        self.calculate_EMA()
+        # Only get emas if they havent already been gotten
+        if self._ema == {}:
+            self.calculate_EMA()
+
+        # Store EMA objext
         emas = self.get_ema()
+
+        # Calcuate MACD Line and set
         macd_line = emas["12"] - emas["26"]
         self._MACD = macd_line
 
