@@ -1,60 +1,36 @@
-Stock Analyzer Application
-Description
-The Stock Analyzer application is a Python program designed to analyze stock data, fetch real-time information, and perform various technical analyses. It utilizes the Yahoo Finance API to fetch stock data and provides several features for users to analyze and visualize the data.
+# Stock Analyzer Application
 
-Key Features
-Data Fetching:
+## Description
 
-Fetch historical stock data for a specified time frame.
-Fetch intraday stock data for the current day.
-Data Visualization:
+The **Stock Analyzer** application is a Python program designed to analyze stock data, fetch real-time information, and perform various technical analyses. It utilizes the Yahoo Finance API to fetch stock data and provides several features for users to analyze and visualize the data.
 
-View historical stock data using interactive charts.
-Choose different chart values such as Open, High, Low, Close, and Volume.
-Financial Information:
+## Key Features
 
-Retrieve basic financial information about the selected stock, including market cap, sector, and more.
-Options Chain:
+- **Data Fetching:**
+  - Fetch historical stock data for a specified time frame.
+  - Fetch intraday stock data for the current day.
 
-Fetch and display options chain data, including call and put options.
-Technical Indicators:
+- **Data Visualization:**
+  - View historical stock data using interactive charts.
+  - Choose different chart values such as Open, High, Low, Close, and Volume.
 
-Calculate and display Simple Moving Averages (SMA) for various periods.
-Calculate and display Exponential Moving Averages (EMA) for popular periods.
-Calculate Moving Average Convergence Divergence (MACD) and Signal Line.
-Calculate Relative Strength Index (RSI).
-Predictive Models:
+- **Financial Information:**
+  - Retrieve basic financial information about the selected stock, including market cap, sector, and more.
 
-Implement predictive models like K-Nearest Neighbors, Random Forest Regression, and Linear Regression to predict stock prices.
-Usage
-Clone the repository:
+- **Options Chain:**
+  - Fetch and display options chain data, including call and put options.
 
-bash
-Copy code
-git clone <repository_url>
-Install dependencies:
+- **Technical Indicators:**
+  - Calculate and display Simple Moving Averages (SMA) for various periods.
+  - Calculate and display Exponential Moving Averages (EMA) for popular periods.
+  - Calculate Moving Average Convergence Divergence (MACD) and Signal Line.
+  - Calculate Relative Strength Index (RSI).
 
-Copy code
-pip install -r requirements.txt
-Run the application:
+- **Predictive Models:**
+  - Implement predictive models like K-Nearest Neighbors, Random Forest Regression, and Linear Regression to predict stock prices.
 
-css
-Copy code
-python main.py
-Dependencies
-yfinance: Used for fetching stock data from Yahoo Finance.
-matplotlib: Utilized for creating interactive charts and visualizations.
-scikit-learn: Used for implementing machine learning models for stock price prediction.
-Screenshots
-Stock Analyzer Screenshot 1
-Interactive chart displaying historical stock data.
+## Usage
 
-Stock Analyzer Screenshot 2
-Predictive model results for stock price prediction.
-
-Contributors
-Your Name
-Contributor 1
-Contributor 2
-License
-This project is licensed under the MIT License - see the LICENSE file for details.App
+1. **Clone the repository:**
+   ```bash
+   git clone <repository_url>
