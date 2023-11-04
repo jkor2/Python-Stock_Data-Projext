@@ -32,6 +32,7 @@ class StockAnalyzerController:
         self._sma = {}
         self._ema = {}
         self._rsi = {}
+        self._MACD = None
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -248,6 +249,15 @@ class StockAnalyzerController:
         else:
             return "Please calculate the EMA's before retrival"
 
+    def get_macd(self):
+        """
+        Returns the MACD if it has been calculated
+        """
+        if self._MACD == None:
+            return "Please calculate the MACD before retrival"
+        else:
+            return self._MACD
+
     def get_RSI(self):
         """
         Runs the rsi method on listed periods 
@@ -453,10 +463,15 @@ class StockAnalyzerController:
         closes = data["Close"].values
 
         # Calculating SMA's
+
         three_day = sum(closes[-3:]) / 3
+
         five_day = sum(closes[-5:]) / 5
+
         ten_day = sum(closes[-10:]) / 10
+        tweleve_day = sum(closes[-12:]) / 12
         twenty_one_day = sum(closes[-21:]) / 21
+        twenty_six_day = sum(closes[-26:]) / 26
         thirty_day = sum(closes[-30:]) / 30
         fifty_day = sum(closes[-50:]) / 50
         hundred_day = sum(closes[-100:]) / 100
@@ -467,7 +482,9 @@ class StockAnalyzerController:
             "3": three_day,
             "5": five_day,
             "10": ten_day,
+            "12": tweleve_day,
             "21": twenty_one_day,
+            "26": twenty_six_day,
             "30": thirty_day,
             "50": fifty_day,
             "100": hundred_day,
@@ -496,7 +513,7 @@ class StockAnalyzerController:
 
         # Get all previous smas
         prev_sma = self._sma
-        emas = [3, 5, 10, 21, 30, 50, 100, 200]
+        emas = [3, 5, 10, 12, 21, 26, 30, 50, 100, 200]
 
         # Init objext to hold emas
         ema_holder = {}
@@ -555,7 +572,14 @@ class StockAnalyzerController:
         return relative_stength_index
 
     def calculate_MACD(self):
-        pass
+        """
+        Calcuates the MACD line of the last closing 
+        price
+        """
+        self.calculate_EMA()
+        emas = self.get_ema()
+        macd_line = emas["12"] - emas["26"]
+        self._MACD = macd_line
 
     def calculate_Bollinger_Bands(self):
         pass
@@ -599,4 +623,5 @@ if __name__ == "__main__":
     # controller.fetch_data_range()
     # controller.linear_regression("root")
     # print(controller.fetch_live_data())
-    print(controller.get_RSI())
+    controller.calculate_MACD()
+    print(controller.get_macd())
