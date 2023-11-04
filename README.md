@@ -6,6 +6,9 @@ The **Stock Analyzer** application is a Python program designed to analyze stock
 
 ## Key Features
 
+- **Predictive Models:**
+  - Implement predictive models like K-Nearest Neighbors, Random Forest Regression, and Linear Regression to predict stock prices.
+
 - **Data Fetching:**
 
   - Fetch historical stock data for a specified time frame.
@@ -30,9 +33,6 @@ The **Stock Analyzer** application is a Python program designed to analyze stock
   - Calculate and display Exponential Moving Averages (EMA) for popular periods.
   - Calculate Moving Average Convergence Divergence (MACD) and Signal Line.
   - Calculate Relative Strength Index (RSI).
-
-- **Predictive Models:**
-  - Implement predictive models like K-Nearest Neighbors, Random Forest Regression, and Linear Regression to predict stock prices.
 
 ## Usage
 
