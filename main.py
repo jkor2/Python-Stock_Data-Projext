@@ -295,6 +295,26 @@ class StockAnalyzerController:
         self._rsi = rsi_holder
 
         return self._rsi
+
+        self._bollinger = None
+        self._envelopes = None
+        self._rate_of_change = None
+
+    def get_bollinger(self):
+        if self._bollinger == None:
+            self.calculate_Bollinger_Bands()
+        return self._bollinger
+
+    def get_envelopes(self):
+        if self._envelopes == None:
+            self.calculate_moving_average_enevelope()
+        return self._envelopes
+
+    def get_rate_of_change(self):
+        if self._rate_of_change == None:
+            self.calculate_rate_of_change()
+        return self._rate_of_change
+
     # Predicitive Models ----------------------------------------------------------------------------
 
     def nearest_nehibor(self, root):
@@ -652,7 +672,7 @@ class StockAnalyzerController:
         # Set bollinger band data
         self._bollinger = bands
 
-    def moving_average_enevelope(self):
+    def calculate_moving_average_enevelope(self):
         """
         Calculates the moving average 
         envelopes of all SMA's
@@ -683,7 +703,7 @@ class StockAnalyzerController:
         # Set _envelopes data memeber
         self._envelopes = enevelopes
 
-    def rate_of_change(self):
+    def calculate_rate_of_change(self):
         """
         Calculates the rate of change of n periods 
         """
@@ -748,4 +768,4 @@ if __name__ == "__main__":
     # print(controller.fetch_live_data())
     # controller.calculate_MACD()
     # print(controller.get_macd())
-    controller.get_RSI()
+    controller.get_bollinger()
