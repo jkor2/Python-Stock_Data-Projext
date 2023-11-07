@@ -496,7 +496,6 @@ class StockAnalyzerController:
         }
 
         # Updating sma member
-        pprint(sma)
         self._sma = sma
 
     def calculate_EMA(self):
@@ -528,6 +527,12 @@ class StockAnalyzerController:
             alpha = 2 / (day + 1)
             ema_price = (1 - alpha) * prev_sma[str(day)] + alpha * closes[-1]
             ema_holder[str(day)] = ema_price
+
+        # Check bearish v bullish with golden cross
+        if ema_holder["50"] > ema_holder["200"]:
+            ema_holder["status"] = "Bullish"
+        else:
+            ema_holder["status"] = "Bearish"
 
         # Update ema memeber
         self._ema = ema_holder
@@ -731,4 +736,4 @@ if __name__ == "__main__":
     # print(controller.fetch_live_data())
     # controller.calculate_MACD()
     # print(controller.get_macd())
-    controller.rate_of_change()
+    controller.calculate_EMA()
