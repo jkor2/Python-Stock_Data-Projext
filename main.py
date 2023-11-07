@@ -34,6 +34,7 @@ class StockAnalyzerController:
         self._rsi = {}
         self._MACD = None
         self._bollinger = None
+        self._envelopes = None
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -633,8 +634,36 @@ class StockAnalyzerController:
         # Set bollinger band data
         self._bollinger = bands
 
-    def calculate_ATR(self):
-        pass
+    def moving_average_enevelope(self):
+        """
+        Calculates the moving average 
+        envelopes of all SMA's
+        """
+
+        # Update Time Frame & fetch data
+        self.set_time_frame("1y")
+        self.fetch_data_range()
+
+        # Check if SMA has already been calculated
+        if self._sma == {}:
+            self.calculate_SMA()
+
+        # Set data
+        data = self._sma
+
+        # Temp holder for enevlopes
+        enevelopes = {}
+
+        # Perform calculations
+        for i in data:
+            enevelopes[i] = {
+                'upper': (data[i]) + (data[i] * .03),
+                'middle': data[i],
+                'lower': (data[i]) - (data[i] * .03)
+            }
+
+        # Set _envelopes data memeber
+        self._envelopes = enevelopes
 
     def calculate_Stochastic_Oscillator(self):
         pass
@@ -674,4 +703,4 @@ if __name__ == "__main__":
     # print(controller.fetch_live_data())
     # controller.calculate_MACD()
     # print(controller.get_macd())
-    controller.calculate_Bollinger_Bands()
+    controller.moving_average_enevelope()
