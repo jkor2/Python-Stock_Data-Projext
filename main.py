@@ -478,12 +478,10 @@ class StockAnalyzerController:
         self.fetch_data_range()
         data = self._active_data
         closes = data["Close"].values
+
         # Calculating SMA's
-
         three_day = sum(closes[-3:]) / 3
-
         five_day = sum(closes[-5:]) / 5
-
         ten_day = sum(closes[-10:]) / 10
         tweleve_day = sum(closes[-12:]) / 12
         twenty_day = sum(closes[-20:]) / 20
@@ -493,7 +491,7 @@ class StockAnalyzerController:
         fifty_day = sum(closes[-50:]) / 50
         hundred_day = sum(closes[-100:]) / 100
         two_hundered_day = sum(closes[-200:]) / 200
-        print(closes[-200:])
+
         # Storing in Object
         sma = {
             "3": three_day,
