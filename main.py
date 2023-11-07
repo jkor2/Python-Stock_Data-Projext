@@ -276,10 +276,24 @@ class StockAnalyzerController:
         # Build objext
         for i in periods:
             rsi = self.calculate_RSI(i)
-            rsi_holder[str(i)] = rsi
+
+            # Check the bullish v bearish sentiment
+            status = None
+            if rsi < 30:
+                status = "Bullish, oversold market."
+            elif 30 < rsi < 70:
+                status = "Neutral"
+            else:
+                status = "Bearish, overbought market"
+
+            rsi_holder[str(i)] = {
+                "rsi": rsi,
+                "status": status
+            }
 
         # Set and return object
         self._rsi = rsi_holder
+
         return self._rsi
     # Predicitive Models ----------------------------------------------------------------------------
 
@@ -736,4 +750,4 @@ if __name__ == "__main__":
     # print(controller.fetch_live_data())
     # controller.calculate_MACD()
     # print(controller.get_macd())
-    controller.calculate_EMA()
+    controller.get_RSI()
