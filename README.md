@@ -1,10 +1,15 @@
 # Stock Analyzer Application
 
+**Still a work in progress, updates will be made as done.** 
+
 ## Description
 
 The **Stock Analyzer** application is a Python program designed to analyze stock data, fetch real-time information, and perform various technical analyses. It utilizes the Yahoo Finance API to fetch stock data and provides several features for users to analyze and visualize the data.
 
 ## Key Features
+
+- **Predictive Models:**
+  - Implement predictive models like K-Nearest Neighbors, Random Forest Regression, and Linear Regression to predict stock prices.
 
 - **Data Fetching:**
 
@@ -28,11 +33,8 @@ The **Stock Analyzer** application is a Python program designed to analyze stock
 
   - Calculate and display Simple Moving Averages (SMA) for various periods.
   - Calculate and display Exponential Moving Averages (EMA) for popular periods.
-  - Calculate Moving Average Convergence Divergence (MACD) and Signal Line.
+  - Calculate Moving Average Convergence Divergence (MACD).
   - Calculate Relative Strength Index (RSI).
-
-- **Predictive Models:**
-  - Implement predictive models like K-Nearest Neighbors, Random Forest Regression, and Linear Regression to predict stock prices.
 
 ## Usage
 
