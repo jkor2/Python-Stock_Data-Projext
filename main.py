@@ -296,21 +296,26 @@ class StockAnalyzerController:
 
         return self._rsi
 
-        self._bollinger = None
-        self._envelopes = None
-        self._rate_of_change = None
-
     def get_bollinger(self):
+        """
+        Returns bollinger bands calculation
+        """
         if self._bollinger == None:
             self.calculate_Bollinger_Bands()
         return self._bollinger
 
     def get_envelopes(self):
+        """
+        Returns enevlopes calculation
+        """
         if self._envelopes == None:
             self.calculate_moving_average_enevelope()
         return self._envelopes
 
     def get_rate_of_change(self):
+        """
+        Returns rate of change 
+        """
         if self._rate_of_change == None:
             self.calculate_rate_of_change()
         return self._rate_of_change
