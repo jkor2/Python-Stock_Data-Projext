@@ -20,7 +20,7 @@ class StockAnalyzerController:
     def __init__(self, stock="SPY"):
         self._stock = stock
         self._time_frame = '5d'
-        self._active_data = []
+        self._active_data = None
         self._chart_data = []
         self._ml_data = []
         self._daily_time_frame = "5m"
@@ -33,6 +33,7 @@ class StockAnalyzerController:
         self._ema = {}
         self._rsi = {}
         self._MACD = None
+        self._bollinger = None
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -461,7 +462,6 @@ class StockAnalyzerController:
         self.fetch_data_range()
         data = self._active_data
         closes = data["Close"].values
-
         # Calculating SMA's
 
         three_day = sum(closes[-3:]) / 3
@@ -470,19 +470,21 @@ class StockAnalyzerController:
 
         ten_day = sum(closes[-10:]) / 10
         tweleve_day = sum(closes[-12:]) / 12
+        twenty_day = sum(closes[-20:]) / 20
         twenty_one_day = sum(closes[-21:]) / 21
         twenty_six_day = sum(closes[-26:]) / 26
         thirty_day = sum(closes[-30:]) / 30
         fifty_day = sum(closes[-50:]) / 50
         hundred_day = sum(closes[-100:]) / 100
         two_hundered_day = sum(closes[-200:]) / 200
-
+        print(closes[-200:])
         # Storing in Object
         sma = {
             "3": three_day,
             "5": five_day,
             "10": ten_day,
             "12": tweleve_day,
+            "20": twenty_day,
             "21": twenty_one_day,
             "26": twenty_six_day,
             "30": thirty_day,
@@ -492,6 +494,7 @@ class StockAnalyzerController:
         }
 
         # Updating sma member
+        pprint(sma)
         self._sma = sma
 
     def calculate_EMA(self):
@@ -513,7 +516,7 @@ class StockAnalyzerController:
 
         # Get all previous smas
         prev_sma = self._sma
-        emas = [3, 5, 10, 12, 21, 26, 30, 50, 100, 200]
+        emas = [3, 5, 10, 12, 20, 21, 26, 30, 50, 100, 200]
 
         # Init objext to hold emas
         ema_holder = {}
@@ -588,7 +591,47 @@ class StockAnalyzerController:
         self._MACD = macd_line
 
     def calculate_Bollinger_Bands(self):
-        pass
+        """
+        Returns bollinger band prices 
+        """
+
+        # Update timeframe and data
+        self.set_time_frame("1y")
+        self.fetch_data_range()
+
+        # Check is SMA has been calculated
+        if self._sma == {}:
+            self.calculate_SMA()
+
+        # Set Sma and 20 day window
+        smas = self._sma
+        middle_band = smas["20"]
+
+        # Get data points
+        data = self.get_active_data()["Close"].values
+        window = 20
+
+        # Calcuted Standard Deviation
+        sqr_dif = [(x - middle_band) ** 2 for x in data[-window:]]
+        variance = sum(sqr_dif) / window
+        std_dv = variance ** .5
+
+        # Parameter -- Industry standard
+        k = 2
+
+        # Calulate upper and lower band
+        upper_band = middle_band + k * std_dv
+        lower_band = middle_band - k * std_dv
+
+        # Hold objext
+        bands = {
+            'lower_band': lower_band,
+            'middle_band': middle_band,
+            'upper_band': upper_band
+        }
+
+        # Set bollinger band data
+        self._bollinger = bands
 
     def calculate_ATR(self):
         pass
@@ -629,5 +672,6 @@ if __name__ == "__main__":
     # controller.fetch_data_range()
     # controller.linear_regression("root")
     # print(controller.fetch_live_data())
-    controller.calculate_MACD()
-    print(controller.get_macd())
+    # controller.calculate_MACD()
+    # print(controller.get_macd())
+    controller.calculate_Bollinger_Bands()
