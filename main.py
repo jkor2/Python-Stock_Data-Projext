@@ -35,6 +35,7 @@ class StockAnalyzerController:
         self._MACD = None
         self._bollinger = None
         self._envelopes = None
+        self._rate_of_change = None
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -665,8 +666,35 @@ class StockAnalyzerController:
         # Set _envelopes data memeber
         self._envelopes = enevelopes
 
-    def calculate_Stochastic_Oscillator(self):
-        pass
+    def rate_of_change(self):
+        """
+        Calculates the rate of change of n periods 
+        """
+
+        # Update time frame and data
+        self.set_time_frame("1y")
+        self.fetch_data_range()
+
+        # Get closing prices
+        closing_prices = self._active_data["Close"].values
+
+        # Most recent closing price
+        current_price = closing_prices[-1]
+
+        # Init supported periods
+        periods = [3, 5, 10, 12, 20, 21, 26, 30, 50, 100, 200]
+
+        # Temp ROC holder
+        rate_of_change_by_period = {}
+
+        # Perform operation
+        for i in periods:
+            rate_of_change_by_period[str(
+                i)] = "% " + str(((current_price - closing_prices[-i]) / closing_prices[-i]) * 100)
+
+        # Set data
+        self._rate_of_change = rate_of_change_by_period
+
     # Process Data, and properly store --------------------------------------------------------------
 
     def _process_and_set(self, data):
@@ -703,4 +731,4 @@ if __name__ == "__main__":
     # print(controller.fetch_live_data())
     # controller.calculate_MACD()
     # print(controller.get_macd())
-    controller.moving_average_enevelope()
+    controller.rate_of_change()
