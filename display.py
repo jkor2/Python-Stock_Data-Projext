@@ -245,7 +245,18 @@ def run_nearest_neighbor():
     chart_canvas.get_tk_widget().pack(fill=tk.NO, expand=False)
 
 
+def fetch_technicals():
+    """
+    Returns all Technicals
+    """
+
+    pass
+
+
 # Xreates a button
+Button(root, text='Fetch Technicals', bg='#FAEBD7', font=('arial', 12, 'normal'),
+       command=fetch_technicals).place(x=700, y=50)
+
 Button(root, text='Fetch Data', bg='#FAEBD7', font=('arial', 12, 'normal'),
        command=fetch_stock_data).place(x=700, y=10)
 
