@@ -323,6 +323,9 @@ class StockAnalyzerController:
         return self._rate_of_change
 
     def get_all_techincals(self):
+        """
+        Getting all technicals, and displaying to tkinter 
+        """
         self.calculate_SMA()
         self.calculate_EMA()
         self.get_RSI()
