@@ -127,7 +127,6 @@ class StockAnalyzerController:
         Sets time frame and updates the data based on the tf range
         """
         self._time_frame = time_frame
-
         self.fetch_data_range()
 
     def set_chart_value(self, value):
@@ -182,6 +181,9 @@ class StockAnalyzerController:
         by default the chart will be built on close prices 
 
         """
+
+        self.fetch_data_range()
+
         if self._time_frame == "1d":
             small_range_data = yf.Ticker(self._stock).history(
                 interval="1m", period=self._time_frame)
@@ -319,6 +321,27 @@ class StockAnalyzerController:
         if self._rate_of_change == None:
             self.calculate_rate_of_change()
         return self._rate_of_change
+
+    def get_all_techincals(self):
+        self.calculate_SMA()
+        self.calculate_EMA()
+        self.get_RSI()
+        self.calculate_MACD()
+        self.calculate_Bollinger_Bands()
+        self.calculate_moving_average_enevelope()
+        self.calculate_rate_of_change()
+
+        data = {
+            "sma": self._sma,
+            "ema": self._ema,
+            "rsi": self._rsi,
+            "macd": self._MACD,
+            "bollinger_bands": self._bollinger,
+            "enevlope": self._envelopes,
+            "rate_of_change": self._rate_of_change
+        }
+
+        return data
 
     # Predicitive Models ----------------------------------------------------------------------------
 
@@ -773,4 +796,4 @@ if __name__ == "__main__":
     # print(controller.fetch_live_data())
     # controller.calculate_MACD()
     # print(controller.get_macd())
-    controller.get_bollinger()
+    controller.get_all_techincals()
