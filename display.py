@@ -25,25 +25,38 @@ root = Tk()
 
 # cXeates the main window
 root.geometry('1000x750')
-root.configure(background='#FFFFFF')
+root.configure(background='#698B69')
 root.title('Main')
 
 
 # Creates the Lables
-Label(root, text='Stock Analysis', bg='#FFFFFF',
-      font=('arial', 12, 'normal')).place(x=450, y=25)
+Label(root, text='Stock Analysis', bg='#698B69',
+      font=('arial', 20, 'bold')).place(x=415, y=5)
 
-Label(root, text='Time Frame', bg='#F0F8FF',
-      font=('arial', 10, 'normal')).place(x=50, y=75)
+Label(root, text='Time Frame', bg='#698B69',
+      font=('arial', 10, 'bold')).place(x=45, y=290)
 
-curr_stock = Label(root, text='Current Stock: ' + data.get_current_stock(), bg='#F0F8FF',
-                   font=('arial', 10, 'normal'))
-curr_stock.place(x=350, y=75)
+Label(root, text='Predictive Models', bg='#698B69',
+      font=('arial', 12, 'bold')).place(x=10, y=10)
+
+Label(root, text='Technicals', bg='#698B69',
+      font=('arial', 12, 'bold')).place(x=200, y=10)
+
+Label(root, text='Stock Data', bg='#698B69',
+      font=('arial', 12, 'bold')).place(x=750, y=10)
+
+Label(root, text='Stock Info', bg='#698B69',
+      font=('arial', 12, 'bold')).place(x=900, y=10)
 
 
-curr_time_frame = Label(root, text='Current Time Frame: ' + data.get_current_time_frame(), bg='#F0F8FF',
-                        font=('arial', 10, 'normal'))
-curr_time_frame.place(x=500, y=75)
+curr_stock = Label(root, text='Current Stock: ' + data.get_current_stock(), bg='#698B69',
+                   font=('arial', 10, 'bold'))
+curr_stock.place(x=450, y=80)
+
+
+curr_time_frame = Label(root, text='Current Time Frame: ' + data.get_current_time_frame(), bg='#698B69',
+                        font=('arial', 10, 'bold'))
+curr_time_frame.place(x=450, y=100)
 
 # Creates a text input box
 Stock = Entry(root)
@@ -52,7 +65,7 @@ Stock.place(x=450, y=50)
 
 
 # Create a Text widget for displaying the result
-result_text = Text(root, bg='#F0F8FF', font=(
+result_text = Text(root, bg='#9BCD9B', font=(
     'arial', 10), wrap='word', height=30, width=110)
 result_text.place(x=150, y=200)
 
@@ -79,36 +92,36 @@ def radio_button_selected():
 
 
 # Create radio buttons
-radio_button1 = Radiobutton(root, text="1 Day", variable=selected_option,
+radio_button1 = Radiobutton(root, bg="#698B69", text="1 Day", variable=selected_option,
                             value="1d", command=radio_button_selected)
-radio_button2 = Radiobutton(root, text="5 Day", variable=selected_option,
+radio_button2 = Radiobutton(root, bg="#698B69", text="5 Day", variable=selected_option,
                             value="5d", command=radio_button_selected)
-radio_button3 = Radiobutton(root, text="1 Month", variable=selected_option,
+radio_button3 = Radiobutton(root, bg="#698B69", text="1 Month", variable=selected_option,
                             value="1mo", command=radio_button_selected)
-radio_button4 = Radiobutton(root, text="3 month", variable=selected_option,
+radio_button4 = Radiobutton(root, bg="#698B69", text="3 month", variable=selected_option,
                             value="3mo", command=radio_button_selected)
-radio_button5 = Radiobutton(root, text="6 Month", variable=selected_option,
+radio_button5 = Radiobutton(root, bg="#698B69", text="6 Month", variable=selected_option,
                             value="6mo", command=radio_button_selected)
-radio_button6 = Radiobutton(root, text="1 Year", variable=selected_option,
+radio_button6 = Radiobutton(root, bg="#698B69", text="1 Year", variable=selected_option,
                             value="1y", command=radio_button_selected)
-radio_button7 = Radiobutton(root, text="5 Year", variable=selected_option,
+radio_button7 = Radiobutton(root, bg="#698B69", text="5 Year", variable=selected_option,
                             value="5y", command=radio_button_selected)
-radio_button8 = Radiobutton(root, text="YTD", variable=selected_option,
+radio_button8 = Radiobutton(root, bg="#698B69", text="YTD", variable=selected_option,
                             value="ytd", command=radio_button_selected)
-radio_button9 = Radiobutton(root, text="Max", variable=selected_option,
+radio_button9 = Radiobutton(root, bg="#698B69", text="Max", variable=selected_option,
                             value="MAX", command=radio_button_selected)
 
 
 # Place the radio buttons on the window
-radio_button1.place(x=50, y=100)
-radio_button2.place(x=50, y=130)
-radio_button3.place(x=50, y=160)
-radio_button4.place(x=50, y=190)
-radio_button5.place(x=50, y=220)
-radio_button6.place(x=50, y=250)
-radio_button7.place(x=50, y=280)
-radio_button8.place(x=50, y=310)
-radio_button9.place(x=50, y=340)
+radio_button1.place(x=50, y=310)
+radio_button2.place(x=50, y=340)
+radio_button3.place(x=50, y=370)
+radio_button4.place(x=50, y=400)
+radio_button5.place(x=50, y=430)
+radio_button6.place(x=50, y=460)
+radio_button7.place(x=50, y=490)
+radio_button8.place(x=50, y=520)
+radio_button9.place(x=50, y=550)
 
 
 def fetch_stock_data():
@@ -261,12 +274,12 @@ def fetch_technicals():
     Returns all Technicals
     """
 
-    techs = data.get_all_techincals()
-
     global chart_canvas  # Declare chart_canvas as a global variable
 
     if chart_canvas:  # Delete any canvas if present
         chart_canvas.get_tk_widget().destroy()
+
+    techs = data.get_all_techincals()
 
     result_text.delete(1.0, tk.END)
     result_text.insert(tk.END, 'Technicals\n')
@@ -292,34 +305,34 @@ def fetch_snapshot():
 
 
 # Xreates a button
-Button(root, text='Fetch Technicals', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=fetch_technicals).place(x=700, y=50)
+Button(root, text='Fetch Technicals', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=fetch_technicals).place(x=200, y=40)
 
-Button(root, text='Live Snapshot', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=fetch_snapshot).place(x=700, y=90)
+Button(root, text='Live Snapshot', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=fetch_snapshot).place(x=750, y=80)
 
 
-Button(root, text='Fetch Data', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=fetch_stock_data).place(x=700, y=10)
+Button(root, text='Fetch Data', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=fetch_stock_data).place(x=750, y=40)
 
-Button(root, text='Linear Regression', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=run_regression_mode).place(x=200, y=10)
-Button(root, text='Random Forest', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=run_random_forest).place(x=205, y=50)
+Button(root, text='Linear Regression', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=run_regression_mode).place(x=10, y=40)
+Button(root, text='Random Forest', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=run_random_forest).place(x=10, y=80)
 
-Button(root, text='Nearest Neighbors', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=run_nearest_neighbor).place(x=200, y=90)
+Button(root, text='Nearest Neighbors', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=run_nearest_neighbor).place(x=10, y=120)
 
-Button(root, text='Set Stock', bg='#FAEBD7', font=('arial', 8, 'normal'),
+Button(root, text='Set Stock', bg='#8FBC8F', font=('arial', 8, 'normal'),
        command=set_current_stock).place(x=600, y=47)
 
-Button(root, text='Fetch Info', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=get_stock_info).place(x=820, y=10)
+Button(root, text='Fetch Info', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=get_stock_info).place(x=900, y=40)
 
-Button(root, text='Get Chart', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=get_chart).place(x=400, y=108)
-Button(root, text='Remove Chart', bg='#FAEBD7', font=('arial', 12, 'normal'),
-       command=remove_chart).place(x=500, y=108)
+Button(root, text='Get Chart', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=get_chart).place(x=420, y=135)
+Button(root, text='Remove Chart', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=remove_chart).place(x=510, y=135)
 
 root.resizable(False, False)  # Makes not resiazble
 scrollbar = Scrollbar(root, orient="vertical")  # Init vertical scroll bar
