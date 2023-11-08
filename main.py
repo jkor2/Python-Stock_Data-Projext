@@ -278,23 +278,31 @@ class StockAnalyzerController:
         periods = [7, 9, 14, 21, 28, 50, 100, 200]
         rsi_holder = {}
 
+        fourteen_day = None
+
         # Build objext
         for i in periods:
             rsi = self.calculate_RSI(i)
-
             # Check the bullish v bearish sentiment
             status = None
             if rsi < 30:
+                if i == 14:
+                    fourteen_day = "Bullish"
                 status = "Bullish, oversold market."
             elif 30 < rsi < 70:
+                if i == 14:
+                    fourteen_day = "Neutral"
                 status = "Neutral"
             else:
+                if i == 14:
+                    fourteen_day = "Bearish"
                 status = "Bearish, overbought market"
-
             rsi_holder[str(i)] = {
                 "rsi": rsi,
                 "status": status
             }
+
+        rsi_holder["status"] = fourteen_day
 
         # Set and return object
         self._rsi = rsi_holder
@@ -787,13 +795,14 @@ class StockAnalyzerController:
         """
         Getting all technicals, and displaying to tkinter 
         """
-        self.calculate_SMA()
-        self.calculate_EMA()
-        self.get_RSI()
-        self.calculate_MACD()
-        self.calculate_Bollinger_Bands()
-        self.calculate_moving_average_enevelope()
-        self.calculate_rate_of_change()
+        if self._all_techs == None:
+            self.calculate_SMA()
+            self.calculate_EMA()
+            self.get_RSI()
+            self.calculate_MACD()
+            self.calculate_Bollinger_Bands()
+            self.calculate_moving_average_enevelope()
+            self.calculate_rate_of_change()
 
         data = {
             "sma": self._sma,
@@ -820,6 +829,31 @@ class StockAnalyzerController:
 
         self._ml_data = data
 
+    def process_sentiment(self):
+        """
+        Processes all technical indicators 
+        and returns bearish, bullish, neutral
+        """
+
+        # Chech if indicators have all been calculated
+        if self._all_techs == None:
+            self.calculate_all_techincals()
+
+        # Grab all technicals
+        techs = self._all_techs
+
+        # Temp Holder
+        temp_holder = {}
+
+        # pass on macd, return the rest
+        for i in techs:
+            if i == "macd":
+                pass
+            else:
+                temp_holder[i] = techs[i]["status"]
+
+        return temp_holder
+
 
 # Usage example
 if __name__ == "__main__":
@@ -843,4 +877,4 @@ if __name__ == "__main__":
     # print(controller.fetch_live_data())
     # controller.calculate_MACD()
     # print(controller.get_macd())
-    controller.calculate_moving_average_enevelope()
+    controller.process_sentiment()
