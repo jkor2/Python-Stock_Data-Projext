@@ -21,8 +21,8 @@ class StockAnalyzerController:
         self._stock = stock
         self._time_frame = '5d'
         self._active_data = None
-        self._chart_data = []
-        self._ml_data = []
+        self._chart_data = None
+        self._ml_data = None
         self._daily_time_frame = "5m"
         self._stock_info = {}
         self._finances = []
@@ -36,6 +36,7 @@ class StockAnalyzerController:
         self._bollinger = None
         self._envelopes = None
         self._rate_of_change = None
+        self._all_techs = None
 
     # FETCH Methods ------------------------------------------------------------------------------
     def fetch_data_range(self):
@@ -324,27 +325,13 @@ class StockAnalyzerController:
 
     def get_all_techincals(self):
         """
-        Getting all technicals, and displaying to tkinter 
+        Checks if techs have been caclauted then returns
         """
-        self.calculate_SMA()
-        self.calculate_EMA()
-        self.get_RSI()
-        self.calculate_MACD()
-        self.calculate_Bollinger_Bands()
-        self.calculate_moving_average_enevelope()
-        self.calculate_rate_of_change()
 
-        data = {
-            "sma": self._sma,
-            "ema": self._ema,
-            "rsi": self._rsi,
-            "macd": self._MACD,
-            "bollinger_bands": self._bollinger,
-            "enevlope": self._envelopes,
-            "rate_of_change": self._rate_of_change
-        }
+        if self._all_techs == None:
+            self.calculate_all_techincals()
 
-        return data
+        return self._all_techs
 
     # Predicitive Models ----------------------------------------------------------------------------
 
@@ -762,6 +749,30 @@ class StockAnalyzerController:
 
         # Set data
         self._rate_of_change = rate_of_change_by_period
+
+    def calculate_all_techincals(self):
+        """
+        Getting all technicals, and displaying to tkinter 
+        """
+        self.calculate_SMA()
+        self.calculate_EMA()
+        self.get_RSI()
+        self.calculate_MACD()
+        self.calculate_Bollinger_Bands()
+        self.calculate_moving_average_enevelope()
+        self.calculate_rate_of_change()
+
+        data = {
+            "sma": self._sma,
+            "ema": self._ema,
+            "rsi": self._rsi,
+            "macd": self._MACD,
+            "bollinger_bands": self._bollinger,
+            "enevlope": self._envelopes,
+            "rate_of_change": self._rate_of_change
+        }
+
+        self._all_techs = data
 
     # Process Data, and properly store --------------------------------------------------------------
 
