@@ -250,7 +250,17 @@ def fetch_technicals():
     Returns all Technicals
     """
 
-    pass
+    techs = data.get_all_techincals()
+
+    global chart_canvas  # Declare chart_canvas as a global variable
+
+    if chart_canvas:  # Delete any canvas if present
+        chart_canvas.get_tk_widget().destroy()
+
+    result_text.delete(1.0, tk.END)
+    result_text.insert(tk.END, 'Basic Information\n')
+
+    result_text.insert(tk.END, pprint.pformat(techs))  # Format with pprint
 
 
 # Xreates a button
