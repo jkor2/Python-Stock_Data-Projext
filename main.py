@@ -547,6 +547,11 @@ class StockAnalyzerController:
             "200": two_hundered_day,
         }
 
+        if sma["50"] > sma["200"]:
+            sma["status"] = "Bullish"
+        else:
+            sma["status"] = "Bearish"
+
         # Updating sma member
         self._sma = sma
 
@@ -689,6 +694,16 @@ class StockAnalyzerController:
             'upper_band': upper_band
         }
 
+        # Check sentiment
+        if data[-1] < bands["lower_band"]:
+            bands["status"] = "Bullish"
+        else:
+            bands["status"] = "Neutral"
+        if data[-1] > bands["upper_band"]:
+            bands["status"] = "Bearish"
+        else:
+            bands["status"] = "Neutral"
+
         # Set bollinger band data
         self._bollinger = bands
 
@@ -710,18 +725,29 @@ class StockAnalyzerController:
         data = self._sma
 
         # Temp holder for enevlopes
-        enevelopes = {}
+        envelopes = {}
+        periods = [3, 5, 10, 12, 20, 21, 26, 30, 50, 100, 200]
 
         # Perform calculations
-        for i in data:
-            enevelopes[i] = {
-                'upper': (data[i]) + (data[i] * .03),
-                'middle': data[i],
-                'lower': (data[i]) - (data[i] * .03)
+        for i in periods:
+            envelopes[str(i)] = {
+                'upper': (data[str(i)]) + (data[str(i)] * 0.03),
+                'middle': data[str(i)],
+                'lower': (data[str(i)]) - (data[str(i)] * 0.03)
             }
 
+        # Check sentiment
+        if self._active_data["Close"].values[-1] > envelopes["20"]["upper"]:
+            envelopes["status"] = "Bearish"
+        elif self._active_data["Close"].values[-1] < envelopes["20"]["lower"]:
+            envelopes["status"] = "Bullish"
+        else:
+            envelopes["status"] = "Neutral"
+
+        print(envelopes)
+
         # Set _envelopes data memeber
-        self._envelopes = enevelopes
+        self._envelopes = envelopes
 
     def calculate_rate_of_change(self):
         """
@@ -770,7 +796,7 @@ class StockAnalyzerController:
             "rsi": self._rsi,
             "macd": self._MACD,
             "bollinger_bands": self._bollinger,
-            "enevlope": self._envelopes,
+            "envelope": self._envelopes,
             "rate_of_change": self._rate_of_change
         }
 
@@ -812,4 +838,4 @@ if __name__ == "__main__":
     # print(controller.fetch_live_data())
     # controller.calculate_MACD()
     # print(controller.get_macd())
-    controller.get_snapshot()
+    controller.calculate_moving_average_enevelope()
