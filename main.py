@@ -477,16 +477,16 @@ class StockAnalyzerController:
         x_test = np.arange(len(train_data) + 1, len(train_data) +
                            len(test_data) + 1).reshape(-1, 1)
 
-    # Flatten the predicted_prices array - convert to 1D array
+        # Flatten the predicted_prices array - convert to 1D array
         predicted_prices = model.predict(x_test).flatten()
 
-    # Use the entire dataset for all_days
+        # Use the entire dataset for all_days
         all_days = np.arange(1, len(close_prices) + 1)
 
-    # Concatenate the actual closing prices and predicted closing prices
+        # Concatenate the actual closing prices and predicted closing prices
         all_prices = np.concatenate([close_prices[:-30], predicted_prices])
 
-    # Visualize all 250 days of closing prices
+        # Visualize all 250 days of closing prices
         fig = Figure(figsize=(8, 5))
         ax = fig.add_subplot(1, 1, 1)
         ax.plot(all_days[:len(close_prices) - 30], all_prices[:len(close_prices) - 30],
