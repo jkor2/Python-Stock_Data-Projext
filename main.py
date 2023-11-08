@@ -63,7 +63,7 @@ class StockAnalyzerController:
         Fetches the current quote of stock
         sets the snapshot to the value  
         """
-        data = yf.Ticker('SPY')
+        data = yf.Ticker(self._stock)
         live_data = data.history(period='1d')
         self._live_snapshot = live_data
 
@@ -117,6 +117,11 @@ class StockAnalyzerController:
         """
         Sets stock and updates data range data 
         """
+
+        # Reset Technicals data member on new stock being selected
+        if self._all_techs != None:
+            self._all_techs = None
+
         self._stock = str(stock)
         self.fetch_data_range()
 
@@ -810,4 +815,4 @@ if __name__ == "__main__":
     # print(controller.fetch_live_data())
     # controller.calculate_MACD()
     # print(controller.get_macd())
-    controller.get_all_techincals()
+    controller.get_snapshot()

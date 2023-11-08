@@ -116,6 +116,11 @@ def fetch_stock_data():
     Loads the stock data
     """
 
+    global chart_canvas  # Declare chart_canvas as a global variable
+
+    if chart_canvas:  # Delete any canvas if present
+        chart_canvas.get_tk_widget().destroy()
+
     data.fetch_data_range()
     active_data = data.get_active_data()
 
@@ -141,6 +146,12 @@ def get_stock_info():
     """
     Gets stock info from main class handling API
     """
+
+    global chart_canvas  # Declare chart_canvas as a global variable
+
+    if chart_canvas:  # Delete any canvas if present
+        chart_canvas.get_tk_widget().destroy()
+
     data.fetch_stock_information()
     data.fetch_financials()
     stock_info = data.get_stock_info()
@@ -258,14 +269,35 @@ def fetch_technicals():
         chart_canvas.get_tk_widget().destroy()
 
     result_text.delete(1.0, tk.END)
-    result_text.insert(tk.END, 'Basic Information\n')
+    result_text.insert(tk.END, 'Technicals\n')
 
     result_text.insert(tk.END, pprint.pformat(techs))  # Format with pprint
+
+
+def fetch_snapshot():
+    """
+    Displays a live snapshot
+    """
+    global chart_canvas  # Declare chart_canvas as a global variable
+
+    if chart_canvas:  # Delete any canvas if present
+        chart_canvas.get_tk_widget().destroy()
+
+    snap_shot = data.get_snapshot()
+
+    result_text.delete(1.0, tk.END)
+    result_text.insert(tk.END, 'Live Snapshot \n')
+
+    result_text.insert(tk.END, pprint.pformat(snap_shot))  # Format with pprint
 
 
 # Xreates a button
 Button(root, text='Fetch Technicals', bg='#FAEBD7', font=('arial', 12, 'normal'),
        command=fetch_technicals).place(x=700, y=50)
+
+Button(root, text='Live Snapshot', bg='#FAEBD7', font=('arial', 12, 'normal'),
+       command=fetch_snapshot).place(x=700, y=90)
+
 
 Button(root, text='Fetch Data', bg='#FAEBD7', font=('arial', 12, 'normal'),
        command=fetch_stock_data).place(x=700, y=10)
