@@ -66,7 +66,7 @@ Stock.place(x=450, y=50)
 
 # Create a Text widget for displaying the result
 result_text = Text(root, bg='#9BCD9B', font=(
-    'arial', 10), wrap='word', height=30, width=110)
+    'arial', 10), wrap='word', height=30, width=120)
 result_text.place(x=150, y=200)
 
 # Create a vertical scrollbar for the Text widget
