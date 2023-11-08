@@ -774,6 +774,11 @@ class StockAnalyzerController:
         for i in periods:
             rate_of_change_by_period[str(
                 i)] = "% " + str(((current_price - closing_prices[-i]) / closing_prices[-i]) * 100)
+            if i == 20:
+                if ((current_price - closing_prices[-i]) / closing_prices[-i]) * 100 > 0:
+                    rate_of_change_by_period["status"] = "Bullish"
+                else:
+                    rate_of_change_by_period["status"] = "Bearish"
 
         # Set data
         self._rate_of_change = rate_of_change_by_period
