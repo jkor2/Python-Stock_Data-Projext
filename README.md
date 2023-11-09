@@ -2,6 +2,8 @@
 
 **Still a work in progress, updates will be made as done.** 
 
+Video Demo: [Demo](https://www.youtube.com/watch?v=94ulqcBaaxY)
+
 ## Description
 
 The **Stock Analyzer** application is a Python program designed to analyze stock data, fetch real-time information, and perform various technical analyses. It utilizes the Yahoo Finance API to fetch stock data and provides several features for users to analyze and visualize the data.
