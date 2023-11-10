@@ -31,7 +31,7 @@ class StockAnalyzerController:
         self._live_snapshot = None
         self._sma = None
         self._ema = None
-        self._rsi = {}
+        self._rsi = None
         self._MACD = None
         self._bollinger = None
         self._envelopes = None
@@ -47,7 +47,6 @@ class StockAnalyzerController:
         Returns - date, open, high, low, close, adj clos, volume
         """
         data = yf.download(self._stock, period=self._time_frame)
-        print(100)
         self._process_and_set(data)
 
     def fetch_data_day(self):
@@ -120,23 +119,23 @@ class StockAnalyzerController:
         Sets stock and updates data range data 
         """
 
-        # Reset Technicals data member on new stock being selected
-        if self._all_techs != None:
-            self._all_techs = None
-        if self._stock_info != None:
-            self._stock_info = None
+        # Clear Technicals when new stock is selcted
+        self._sma = None
+        self._ema = None
+        self._rsi = None
+        self._MACD = None
+        self._bollinger = None
+        self._envelopes = None
+        self._rate_of_change = None
 
         self._stock = str(stock)
         self.fetch_data_range()
-
-        # Clears sma data when new stock is selected
-        self.clear_sma()
 
     def set_time_frame(self, time_frame):
         """
         Sets time frame and updates the data based on the tf range
         """
-        print(99)
+
         self._time_frame = time_frame
         self.fetch_data_range()
 
@@ -167,8 +166,7 @@ class StockAnalyzerController:
         """
         Reseting sma 
         """
-
-        self._sma = {}
+        self._sma = None
 
     # GET Methods ------------------------------------------------------------------------------------
     def get_active_data(self):
@@ -195,7 +193,8 @@ class StockAnalyzerController:
 
         """
 
-        self.fetch_data_range()
+        if self._chart_data is None:
+            self.fetch_data_range()
 
         if self._time_frame == "1d":
             small_range_data = yf.Ticker(self._stock).history(
@@ -859,21 +858,4 @@ if __name__ == "__main__":
 
     controller = StockAnalyzerController()
     controller.fetch_data_range()
-    # controller.calculate_EMA()
-    # print(controller.get_active_data())
-    # controller.set_time_frame('max')
-    # controller.set_current_stock("SPY")
-    # controller.set_time_frame('ytd')
-    # controller.fetch_stock_information()
-    # pprint(controller.get_stock_info())
-    # controller.fetch_options_info()
-    # controller.get_options_chain()
-    # controller.get_chart()
-    # controller.calculate_SMA()
-    # controller.get_sma()
-    # controller.fetch_data_range()
-    # controller.linear_regression("root")
-    # print(controller.fetch_live_data())
-    # controller.calculate_MACD()
-    # print(controller.get_macd())
     pprint(controller.get_all_techincals())
