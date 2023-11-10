@@ -33,11 +33,8 @@ The **Stock Analyzer** application is a Python program designed to analyze stock
 
 - **Technical Indicators:**
 
-  - Calculate and display Simple Moving Averages (SMA) for various periods.
-  - Calculate and display Exponential Moving Averages (EMA) for popular periods.
-  - Calculate Moving Average Convergence Divergence (MACD).
-  - Calculate Relative Strength Index (RSI).
-
+  - Calculate a variety of technical indicators 
+  - Calculate the "Best" time to purschase a stock based on the indicators sentiment *not financial advice
 ## Usage
 
 1. **Clone the repository:**
