@@ -1,3 +1,5 @@
+from pprint import pprint
+import numpy as np
 import hardCoded
 import yfinance as yf
 import matplotlib.pyplot as plt
@@ -6,10 +8,11 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
+import pandas as pd
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
 
-import numpy as np
 
-from pprint import pprint
 plt.style.use('dark_background')
 
 
