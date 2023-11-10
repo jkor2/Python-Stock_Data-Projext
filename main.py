@@ -19,18 +19,18 @@ plt.style.use('dark_background')
 class StockAnalyzerController:
     def __init__(self, stock="SPY"):
         self._stock = stock
-        self._time_frame = '5d'
+        self._time_frame = '1y'
         self._active_data = None
         self._chart_data = None
         self._ml_data = None
         self._daily_time_frame = "5m"
-        self._stock_info = {}
+        self._stock_info = None
         self._finances = []
         self._chart_value = "Close"
-        self._options_data = {}
+        self._options_data = None
         self._live_snapshot = None
-        self._sma = {}
-        self._ema = {}
+        self._sma = None
+        self._ema = None
         self._rsi = {}
         self._MACD = None
         self._bollinger = None
@@ -39,6 +39,7 @@ class StockAnalyzerController:
         self._all_techs = None
 
     # FETCH Methods ------------------------------------------------------------------------------
+
     def fetch_data_range(self):
         """
         Public Method  
@@ -46,6 +47,7 @@ class StockAnalyzerController:
         Returns - date, open, high, low, close, adj clos, volume
         """
         data = yf.download(self._stock, period=self._time_frame)
+        print(100)
         self._process_and_set(data)
 
     def fetch_data_day(self):
@@ -121,6 +123,8 @@ class StockAnalyzerController:
         # Reset Technicals data member on new stock being selected
         if self._all_techs != None:
             self._all_techs = None
+        if self._stock_info != None:
+            self._stock_info = None
 
         self._stock = str(stock)
         self.fetch_data_range()
@@ -132,6 +136,7 @@ class StockAnalyzerController:
         """
         Sets time frame and updates the data based on the tf range
         """
+        print(99)
         self._time_frame = time_frame
         self.fetch_data_range()
 
@@ -177,6 +182,8 @@ class StockAnalyzerController:
         """
         Return private stock info data memeber
         """
+        if self._stock_info == None:
+            self.fetch_stock_information()
         return self._stock_info
 
     def get_chart(self, root):
@@ -219,6 +226,8 @@ class StockAnalyzerController:
         """
         Returns options data
         """
+        if self._options_data == None:
+            self.fetch_options_info()
 
         return self._options_data
 
@@ -524,10 +533,17 @@ class StockAnalyzerController:
         Calculates common SMA's based 
         current stock selected 
         """
+
         # Updating data reqs
-        self.set_time_frame("1y")
-        self.fetch_data_range()
+        if self._active_data is None:
+            self.set_time_frame("1y")
+
+        else:
+            if len(self._active_data) <= 200:
+                self.set_time_frame("1y")
+
         data = self._active_data
+
         closes = data["Close"].values
 
         # Calculating SMA's
@@ -572,15 +588,11 @@ class StockAnalyzerController:
         """
 
         # Get and prep data
-        self.set_time_frame("1y")
-        self.fetch_data_range()
         price_data = self._active_data
         closes = price_data["Close"].values
 
         # Calcualte sma's if not already calculated
-        if self._sma != {}:
-            pass
-        else:
+        if self._sma is None:
             self.calculate_SMA()
 
         # Get all previous smas
@@ -655,7 +667,7 @@ class StockAnalyzerController:
         price
         """
         # Only get emas if they havent already been gotten
-        if self._ema == {}:
+        if self._ema is None:
             self.calculate_EMA()
 
         # Store EMA objext
@@ -670,12 +682,8 @@ class StockAnalyzerController:
         Returns bollinger band prices 
         """
 
-        # Update timeframe and data
-        self.set_time_frame("1y")
-        self.fetch_data_range()
-
         # Check is SMA has been calculated
-        if self._sma == {}:
+        if self._sma is None:
             self.calculate_SMA()
 
         # Set Sma and 20 day window
@@ -724,12 +732,8 @@ class StockAnalyzerController:
         envelopes of all SMA's
         """
 
-        # Update Time Frame & fetch data
-        self.set_time_frame("1y")
-        self.fetch_data_range()
-
         # Check if SMA has already been calculated
-        if self._sma == {}:
+        if self._sma is None:
             self.calculate_SMA()
 
         # Set data
@@ -755,8 +759,6 @@ class StockAnalyzerController:
         else:
             envelopes["status"] = "Neutral"
 
-        print(envelopes)
-
         # Set _envelopes data memeber
         self._envelopes = envelopes
 
@@ -764,10 +766,6 @@ class StockAnalyzerController:
         """
         Calculates the rate of change of n periods 
         """
-
-        # Update time frame and data
-        self.set_time_frame("1y")
-        self.fetch_data_range()
 
         # Get closing prices
         closing_prices = self._active_data["Close"].values
@@ -798,7 +796,7 @@ class StockAnalyzerController:
         """
         Getting all technicals, and displaying to tkinter 
         """
-        if self._all_techs == None:
+        if self._all_techs is None:
             self.calculate_SMA()
             self.calculate_EMA()
             self.get_RSI()
@@ -850,9 +848,7 @@ class StockAnalyzerController:
 
         # pass on macd, return the rest
         for i in techs:
-            if i == "macd":
-                pass
-            else:
+            if i != "macd":
                 temp_holder[i] = techs[i]["status"]
 
         return temp_holder
@@ -880,4 +876,4 @@ if __name__ == "__main__":
     # print(controller.fetch_live_data())
     # controller.calculate_MACD()
     # print(controller.get_macd())
-    controller.process_sentiment()
+    pprint(controller.get_all_techincals())
