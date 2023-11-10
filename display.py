@@ -76,7 +76,7 @@ result_text.config(yscrollcommand=scrollbar.set)
 
 
 # Making 5d the dafault time frame
-selected_option = StringVar(value="5d")
+selected_option = StringVar(value="1y")
 
 # Function to handle radio button selection
 
