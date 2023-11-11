@@ -362,13 +362,16 @@ class StockAnalyzerController:
 
     # Predicitive Models ----------------------------------------------------------------------------
     def neural_network(self, root):
+        """
+        Using scikit-learn ML library, uses the neural network MLP regressor to 
+        make a prediction on the next days closing price, needs to be optomized
+        """
         # Pull Data
         data = yf.Ticker(self._stock).history(
             interval="1d", period='5y')
         self.set_ml_data(data)
         data = self._ml_data
         close_prices = data['Close'].values
-        print(len(close_prices))
         training_data = close_prices
 
         # creating / formatting data
@@ -381,7 +384,6 @@ class StockAnalyzerController:
         x_test = np.array(len(training_data) + 1).reshape(-1, 1)
 
         predicted_price = model.predict(x_test)[0]
-        print(predicted_price)
 
         fig = Figure(figsize=(8, 5))
         ax = fig.add_subplot(1, 1, 1)
@@ -421,7 +423,7 @@ class StockAnalyzerController:
         self.set_ml_data(data)
         data = self._ml_data
         close_prices = data['Close'].values
-        print(close_prices)
+
         # init features ** All except the last value **
         X = close_prices.reshape(-1, 1)
         y = close_prices.ravel()
@@ -433,11 +435,10 @@ class StockAnalyzerController:
 
         # Get previous day close
         previous_day_close = close_prices[-1].reshape(1, -1)
-        print(previous_day_close)
 
         # predict based on previous day close (returns 1 val)
         predictionn = model.predict(previous_day_close)
-        print(predictionn)
+
         fig = Figure(figsize=(8, 5))
         ax = fig.add_subplot(1, 1, 1)
 
