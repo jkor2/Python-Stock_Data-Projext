@@ -791,6 +791,15 @@ class StockAnalyzerController:
         # Set data
         self._rate_of_change = rate_of_change_by_period
 
+    def calculate_williams_R(self):
+        if self._active_data == None:
+            self.fetch_data_range()
+        elif len(self._active_data) <= 45:
+            self.set_time_frame("1y")
+
+        data = self._active_data["Close"].values[-50:]
+        print(data)
+
     def calculate_all_techincals(self):
         """
         Getting all technicals, and displaying to tkinter 
@@ -857,5 +866,4 @@ class StockAnalyzerController:
 if __name__ == "__main__":
 
     controller = StockAnalyzerController()
-    controller.fetch_data_range()
-    pprint(controller.get_all_techincals())
+    controller.calculate_williams_R()
