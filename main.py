@@ -37,6 +37,7 @@ class StockAnalyzerController:
         self._envelopes = None
         self._rate_of_change = None
         self._all_techs = None
+        self._willaims_R = None
 
     # FETCH Methods ------------------------------------------------------------------------------
 
@@ -792,13 +793,35 @@ class StockAnalyzerController:
         self._rate_of_change = rate_of_change_by_period
 
     def calculate_williams_R(self):
-        if self._active_data == None:
+        if self._active_data is None:
             self.fetch_data_range()
         elif len(self._active_data) <= 45:
             self.set_time_frame("1y")
 
+        # Long Term Period - 50 Days
         data = self._active_data["Close"].values[-50:]
-        print(data)
+        current_price = data[-1]
+        max_high = max(data[:-1])
+        min_low = min(data[:-1])
+
+        # Calculation
+        r = ((max_high - current_price)/(max_high - min_low)) * -100
+
+        # Holder
+        result = {
+            "%R": r
+        }
+
+        # Check Sentiment
+        if r < -80:
+            result["status"] = "Bullish"
+        elif r > -20:
+            result["status"] = "Bearish"
+        else:
+            result["status"] = "Neutral"
+        pprint(result)
+
+        self._willaims_R = result
 
     def calculate_all_techincals(self):
         """
@@ -812,6 +835,7 @@ class StockAnalyzerController:
             self.calculate_Bollinger_Bands()
             self.calculate_moving_average_enevelope()
             self.calculate_rate_of_change()
+            self.calculate_williams_R()
 
         data = {
             "sma": self._sma,
@@ -820,7 +844,8 @@ class StockAnalyzerController:
             "macd": self._MACD,
             "bollinger_bands": self._bollinger,
             "envelope": self._envelopes,
-            "rate_of_change": self._rate_of_change
+            "rate_of_change": self._rate_of_change,
+            "willaims_r": self._willaims_R
         }
 
         self._all_techs = data
@@ -845,7 +870,7 @@ class StockAnalyzerController:
         """
 
         # Chech if indicators have all been calculated
-        if self._all_techs == None:
+        if self._all_techs is None:
             self.calculate_all_techincals()
 
         # Grab all technicals
@@ -866,4 +891,5 @@ class StockAnalyzerController:
 if __name__ == "__main__":
 
     controller = StockAnalyzerController()
-    controller.calculate_williams_R()
+    pprint(controller.get_all_techincals())
+    pprint(controller.process_sentiment())
