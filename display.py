@@ -269,6 +269,21 @@ def run_nearest_neighbor():
     chart_canvas.get_tk_widget().pack(fill=tk.NO, expand=False)
 
 
+def run_neural_network():
+    global chart_canvas  # Declare chart_canvas as a global variable
+
+    if chart_canvas:  # Delete any canvas if present
+        chart_canvas.get_tk_widget().destroy()
+
+    data.set_time_frame("5y")
+    selected_option.set("5y")
+    curr_time_frame.config(text='Current Time Frame: ' +
+                           data.get_current_time_frame())
+
+    chart_canvas = data.neural_network(root)
+    chart_canvas.get_tk_widget().pack(fill=tk.NO, expand=False)
+
+
 def fetch_technicals():
     """
     Returns all Technicals
@@ -359,6 +374,10 @@ Button(root, text='Random Forest', bg='#8FBC8F', font=('arial', 12, 'normal'),
 
 Button(root, text='Nearest Neighbors', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=run_nearest_neighbor).place(x=10, y=120)
+
+Button(root, text='Neural Network', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=run_neural_network).place(x=10, y=160)
+
 
 Button(root, text='Set Stock', bg='#8FBC8F', font=('arial', 8, 'normal'),
        command=set_current_stock).place(x=600, y=47)

@@ -9,6 +9,10 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 import pandas as pd
+from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import MinMaxScaler
+
+
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
@@ -357,6 +361,52 @@ class StockAnalyzerController:
         return self._all_techs
 
     # Predicitive Models ----------------------------------------------------------------------------
+    def neural_network(self, root):
+        # Pull Data
+        data = yf.Ticker(self._stock).history(
+            interval="1d", period='5y')
+        self.set_ml_data(data)
+        data = self._ml_data
+        close_prices = data['Close'].values
+        print(len(close_prices))
+        training_data = close_prices
+
+        # creating / formatting data
+        x_train = np.arange(1, len(training_data) + 1).reshape(-1, 1)
+        y_train = training_data.ravel()
+
+        model = MLPRegressor(hidden_layer_sizes=(87,), solver="adam",
+                             random_state=1, max_iter=500).fit(x_train, y_train)
+
+        x_test = np.array(len(training_data) + 1).reshape(-1, 1)
+
+        predicted_price = model.predict(x_test)[0]
+        print(predicted_price)
+
+        fig = Figure(figsize=(8, 5))
+        ax = fig.add_subplot(1, 1, 1)
+
+        # Plot the last 30 days of training data
+        ax.plot(range(0, 31), y_train[-31:],
+                label='Training Data', color='blue')
+
+        # Plot the predicted price for the next day
+        ax.scatter(31, predicted_price, color='red', marker='o',
+                   label=f'Predicted Price: {predicted_price}')
+
+        ax.set_xlabel('Day')
+        ax.set_ylabel('Price')
+        ax.set_title(
+            'Stock Price Prediction for the Next Day using NeuralNetworkMLPRegressor')
+        ax.legend()
+
+        canvas = FigureCanvasTkAgg(fig, master=root)
+        canvas_widget = canvas.get_tk_widget()
+        canvas_widget.place(x=150, y=200)  # Adjust the coordinates as needed
+
+        canvas.draw()
+
+        return canvas
 
     def nearest_nehibor(self, root):
         """
@@ -371,27 +421,28 @@ class StockAnalyzerController:
         self.set_ml_data(data)
         data = self._ml_data
         close_prices = data['Close'].values
-
+        print(close_prices)
         # init features ** All except the last value **
-        X = close_prices[:-1].reshape(-1, 1)
-        y = close_prices[1:]
+        X = close_prices.reshape(-1, 1)
+        y = close_prices.ravel()
 
         # init nearest neighbor model
-        model = KNeighborsRegressor(n_neighbors=3)
+        model = KNeighborsRegressor(n_neighbors=100)
         # Train model
         model.fit(X, y)
 
         # Get previous day close
         previous_day_close = close_prices[-1].reshape(1, -1)
+        print(previous_day_close)
 
         # predict based on previous day close (returns 1 val)
         predictionn = model.predict(previous_day_close)
-
+        print(predictionn)
         fig = Figure(figsize=(8, 5))
         ax = fig.add_subplot(1, 1, 1)
 
         # Plot the last 30 days of training data
-        ax.plot(range(1, 31), y[-30:], label='Training Data', color='blue')
+        ax.plot(range(0, 31), y[-31:], label='Training Data', color='blue')
 
         # Plot the predicted price for the next day
         ax.scatter(31, predictionn, color='red', marker='o',
@@ -426,7 +477,7 @@ class StockAnalyzerController:
         self.set_ml_data(five_day_data)
         data = self._ml_data
         closing_prices = data["Close"].values
-        training_data = closing_prices[:(len(closing_prices)-1)]
+        training_data = closing_prices
 
         # creating / formatting data
         x_train = np.arange(1, len(training_data) + 1).reshape(-1, 1)
@@ -476,51 +527,35 @@ class StockAnalyzerController:
         data = self._ml_data
         close_prices = data['Close'].values
 
-        # Training data
-        # Use 220 days for training
-        train_data = close_prices[:(len(close_prices) - 30)]
+        training_data = close_prices
 
-        # set test data (next 30 days)
-        test_data = close_prices[-30:]
+        # creating / formatting data
+        x_train = np.arange(1, len(training_data) + 1).reshape(-1, 1)
+        y_train = training_data.ravel()
 
-        # Even spaced array, 2d array reshape
-        x_train = np.arange(1, len(train_data) + 1).reshape(-1, 1)
-        y_train = train_data.reshape(-1, 1)  # 2d single column reshape
         # Init linear regression model
-        model = LinearRegression()
-        # Train model
-        model.fit(x_train, y_train)
+        model = LinearRegression().fit(x_train, y_train)
 
-        # Create evennly spaced array and reshape into 2d single collumn array
-        x_test = np.arange(len(train_data) + 1, len(train_data) +
-                           len(test_data) + 1).reshape(-1, 1)
+        # Creating a feature for the next day
+        x_test = np.array(len(training_data) + 1).reshape(-1, 1)
 
-        # Flatten the predicted_prices array - convert to 1D array
-        predicted_prices = model.predict(x_test).flatten()
+        # Predicting price for the next day
+        predicted_price = model.predict(x_test)[0]
 
-        # Use the entire dataset for all_days
-        all_days = np.arange(1, len(close_prices) + 1)
-
-        # Concatenate the actual closing prices and predicted closing prices
-        all_prices = np.concatenate([close_prices[:-30], predicted_prices])
-
-        # Visualize all 250 days of closing prices
         fig = Figure(figsize=(8, 5))
         ax = fig.add_subplot(1, 1, 1)
-        ax.plot(all_days[:len(close_prices) - 30], all_prices[:len(close_prices) - 30],
-                label='Actual Closing Prices', color='blue')
-        ax.plot(all_days[len(close_prices) - 30:], all_prices[len(close_prices) -
-                30:], label=f'Predicted Closing Price: {predicted_prices[0]}', color='red')
-        # Separating actual and predicted prices
-        ax.axvline(x=len(close_prices) - 30, color='gray',
-                   linestyle='--', linewidth=1)
+        ax.plot(range(1, 31), y_train[-30:],
+                label='Training Data', color='blue')
+        ax.scatter(31, predicted_price, color='red', marker='o',
+                   label=f'Predicted Price: {predicted_price}')
         ax.set_xlabel('Day')
-        ax.set_ylabel('Closing Price')
-        ax.set_title('Actual vs. Predicted Closing Prices')
+        ax.set_ylabel('Price')
+        ax.set_title(
+            'Stock Price Prediction for the Next Day using LinearRegression')
         ax.legend()
 
-        # Creating canvas and sending to display method
-        canvas = FigureCanvasTkAgg(fig, master=root)  # A tk.DrawingArea.
+        # Creating canvas and returning
+        canvas = FigureCanvasTkAgg(fig, master=root)
         canvas_widget = canvas.get_tk_widget()
         canvas_widget.place(x=150, y=200)  # Adjust the coordinates as needed
 
@@ -929,5 +964,5 @@ class StockAnalyzerController:
 if __name__ == "__main__":
 
     controller = StockAnalyzerController()
-    pprint(controller.get_all_techincals())
-    pprint(controller.process_sentiment())
+    pprint("NN", controller.neural_network())
+    pprint("NNeigh")
