@@ -38,6 +38,7 @@ class StockAnalyzerController:
         self._rate_of_change = None
         self._all_techs = None
         self._willaims_R = None
+        self._stochastic = None
 
     # FETCH Methods ------------------------------------------------------------------------------
 
@@ -828,6 +829,36 @@ class StockAnalyzerController:
 
         self._willaims_R = result
 
+    def calulate_stochastic(self):
+        if self._active_data is None:
+            self.fetch_data_range()
+        elif len(self._active_data) <= 45:
+            self.set_time_frame("1y")
+
+        # Long Term Period - 50 Days
+        data = self._active_data["Close"].values[-50:]
+        current_price = data[-1]
+        max_high = max(data[:-1])
+        min_low = min(data[:-1])
+
+        k = ((current_price - min_low)/(max_high - min_low)) * 100
+
+        # Holder
+        result = {
+            "%K": k
+        }
+
+        # Check Sentiment
+        if k < 20:
+            result["status"] = "Bullish"
+        elif k > 80:
+            result["status"] = "Bearish"
+        else:
+            result["status"] = "Neutral"
+        pprint(result)
+
+        self._stochastic = result
+
     def calculate_all_techincals(self):
         """
         Getting all technicals, and displaying to tkinter 
@@ -841,6 +872,7 @@ class StockAnalyzerController:
             self.calculate_moving_average_enevelope()
             self.calculate_rate_of_change()
             self.calculate_williams_R()
+            self.calulate_stochastic()
 
         data = {
             "sma": self._sma,
@@ -850,7 +882,8 @@ class StockAnalyzerController:
             "bollinger_bands": self._bollinger,
             "envelope": self._envelopes,
             "rate_of_change": self._rate_of_change,
-            "willaims_r": self._willaims_R
+            "willaims_r": self._willaims_R,
+            "stochastic_oscillator_k": self._stochastic
         }
 
         self._all_techs = data
