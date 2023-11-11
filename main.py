@@ -793,6 +793,11 @@ class StockAnalyzerController:
         self._rate_of_change = rate_of_change_by_period
 
     def calculate_williams_R(self):
+        """
+        Calculates the willaims R and determines the sentiment 
+        based on the value
+        """
+
         if self._active_data is None:
             self.fetch_data_range()
         elif len(self._active_data) <= 45:
