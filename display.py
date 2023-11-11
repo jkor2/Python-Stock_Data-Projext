@@ -270,6 +270,9 @@ def run_nearest_neighbor():
 
 
 def run_neural_network():
+    """
+    Returns the chart of the MLP Regressor predicted price 
+    """
     global chart_canvas  # Declare chart_canvas as a global variable
 
     if chart_canvas:  # Delete any canvas if present
