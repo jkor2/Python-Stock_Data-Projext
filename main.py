@@ -11,7 +11,7 @@ from sklearn.neighbors import KNeighborsRegressor
 import pandas as pd
 from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import MinMaxScaler
-
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -43,6 +43,9 @@ class StockAnalyzerController:
         self._all_techs = None
         self._willaims_R = None
         self._stochastic = None
+        self._news_sentiment = None
+        self._technical_sentiment = None
+        self._news = None
 
     # FETCH Methods ------------------------------------------------------------------------------
 
@@ -133,7 +136,9 @@ class StockAnalyzerController:
         self._bollinger = None
         self._envelopes = None
         self._rate_of_change = None
-
+        self._technical_sentiment = None
+        self._news_sentiment = None
+        self._news = None
         self._stock = str(stock)
         self.fetch_data_range()
 
@@ -359,6 +364,13 @@ class StockAnalyzerController:
             self.calculate_all_techincals()
 
         return self._all_techs
+
+    def get_news_sentiment(self):
+
+        if self._news is None and self._news_sentiment is None:
+            self.process_news_sentiment()
+
+        return self._news_sentiment
 
     # Predicitive Models ----------------------------------------------------------------------------
     def neural_network(self, root):
@@ -960,10 +972,39 @@ class StockAnalyzerController:
 
         return temp_holder
 
+    def process_news_sentiment(self):
+        """
+        Fetches the news articles for the given stock and 
+        determines the sentiment of the news articles 
+        """
+
+        # Calculate the news
+        if self._news is None:
+            self._news = yf.Ticker(self._stock).news
+
+        # Get the news
+        temp_news_object = self._news
+
+        # Initialzie the sentiment analyzer
+        analyzer = SentimentIntensityAnalyzer()
+
+        # Make sure there is news present
+        if len(temp_news_object) >= 1:
+
+            temp_sent_object = {}
+
+            for i in temp_news_object:
+                title = i["title"]
+                vs = analyzer.polarity_scores(title)
+                temp_sent_object[title] = vs
+
+            self._news_sentiment = temp_sent_object
+        else:
+            self._news_sentiment = None
+
 
 # Usage example
 if __name__ == "__main__":
 
     controller = StockAnalyzerController()
-    pprint("NN", controller.neural_network())
-    pprint("NNeigh")
+    print(controller.get_news_sentiment())
