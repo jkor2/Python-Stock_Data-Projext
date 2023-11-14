@@ -323,6 +323,10 @@ def fetch_sentiment_indicators():
 
 
 def fetch_news_sentiment():
+    """
+    Displays news sentiment calcultions  
+    """
+
     global chart_canvas  # Declare chart_canvas as a global variable
 
     if chart_canvas:  # Delete any canvas if present
