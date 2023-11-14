@@ -322,6 +322,20 @@ def fetch_sentiment_indicators():
     result_text.insert(tk.END, pprint.pformat(techs))  # Format with pprint
 
 
+def fetch_news_sentiment():
+    global chart_canvas  # Declare chart_canvas as a global variable
+
+    if chart_canvas:  # Delete any canvas if present
+        chart_canvas.get_tk_widget().destroy()
+
+    techs = data.get_news_sentiment()
+
+    result_text.delete(1.0, tk.END)
+    result_text.insert(tk.END, 'News Sentiment\n')
+
+    result_text.insert(tk.END, pprint.pformat(techs))  # Format with pprint
+
+
 def good_to_buy():
 
     global chart_canvas  # Declare chart_canvas as a global variable
@@ -359,8 +373,11 @@ Button(root, text='Fetch Technicals', bg='#8FBC8F', font=('arial', 12, 'normal')
 Button(root, text='Technical Sentiment', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=fetch_sentiment_indicators).place(x=200, y=80)
 
+Button(root, text='News Sentiment', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=fetch_news_sentiment).place(x=200, y=120)
+
 Button(root, text='Good to Buy?', bg='#8FBC8F', font=('arial', 12, 'normal'),
-       command=good_to_buy).place(x=200, y=120)
+       command=good_to_buy).place(x=200, y=160)
 
 
 Button(root, text='Live Snapshot', bg='#8FBC8F', font=('arial', 12, 'normal'),
