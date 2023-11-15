@@ -998,11 +998,11 @@ class StockAnalyzerController:
                 title = i["title"]
                 vs = analyzer.polarity_scores(title)
                 if vs["compound"] > 0.5:
-                    vs["status"] = "Bullish"
+                    temp_sent_object["status"] = "Bullish"
                 elif vs["compound"] < -0.5:
-                    vs["status"] = "Bearish"
+                    temp_sent_object["status"] = "Bearish"
                 else:
-                    vs["status"] = "Neutral"
+                    temp_sent_object["status"] = "Neutral"
                 temp_sent_object[title] = vs
 
             self._news_sentiment = temp_sent_object
