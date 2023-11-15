@@ -374,7 +374,7 @@ def fetch_snapshot():
 Button(root, text='Fetch Technicals', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=fetch_technicals).place(x=200, y=40)
 
-Button(root, text='Technical Sentiment', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='All Sentiment', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=fetch_sentiment_indicators).place(x=200, y=80)
 
 Button(root, text='News Sentiment', bg='#8FBC8F', font=('arial', 12, 'normal'),

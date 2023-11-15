@@ -959,8 +959,12 @@ class StockAnalyzerController:
         if self._all_techs is None:
             self.calculate_all_techincals()
 
+        if self._news_sentiment is None:
+            self.process_news_sentiment()
+
         # Grab all technicals
         techs = self._all_techs
+        news = self._news_sentiment
 
         # Temp Holder
         temp_holder = {}
@@ -969,6 +973,11 @@ class StockAnalyzerController:
         for i in techs:
             if i != "macd":
                 temp_holder[i] = techs[i]["status"]
+
+        for idx, value in enumerate(news):
+            temp_holder[f"Article {idx + 1}"] = news[value]["status"]
+
+        pprint(temp_holder)
 
         return temp_holder
 
@@ -992,19 +1001,24 @@ class StockAnalyzerController:
         if len(temp_news_object) >= 1:
 
             temp_sent_object = {}
-
             # Determine the bull/neutral/bear status
             for i in temp_news_object:
                 title = i["title"]
                 vs = analyzer.polarity_scores(title)
-                if vs["compound"] > 0.5:
-                    temp_sent_object["status"] = "Bullish"
-                elif vs["compound"] < -0.5:
-                    temp_sent_object["status"] = "Bearish"
-                else:
-                    temp_sent_object["status"] = "Neutral"
-                temp_sent_object[title] = vs
+                status = None
 
+                if vs["compound"] > 0.5:
+                    status = "Bullish"
+                elif vs["compound"] < -0.5:
+                    status = "Bearish"
+                else:
+                    status = "Neutral"
+                temp_sent_object[title] = {
+                    "values": vs,
+                    "status": status
+                }
+
+            pprint(temp_sent_object)
             self._news_sentiment = temp_sent_object
         else:
             self._news_sentiment = None
@@ -1014,4 +1028,4 @@ class StockAnalyzerController:
 if __name__ == "__main__":
 
     controller = StockAnalyzerController()
-    pprint(controller.get_news_sentiment())
+    controller.process_sentiment()
