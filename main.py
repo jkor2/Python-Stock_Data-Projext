@@ -993,9 +993,16 @@ class StockAnalyzerController:
 
             temp_sent_object = {}
 
+            # Determine the bull/neutral/bear status
             for i in temp_news_object:
                 title = i["title"]
                 vs = analyzer.polarity_scores(title)
+                if vs["compound"] > 0.5:
+                    vs["status"] = "Bullish"
+                elif vs["compound"] < -0.5:
+                    vs["status"] = "Bearish"
+                else:
+                    vs["status"] = "Neutral"
                 temp_sent_object[title] = vs
 
             self._news_sentiment = temp_sent_object
@@ -1007,4 +1014,4 @@ class StockAnalyzerController:
 if __name__ == "__main__":
 
     controller = StockAnalyzerController()
-    print(controller.get_news_sentiment())
+    pprint(controller.get_news_sentiment())
