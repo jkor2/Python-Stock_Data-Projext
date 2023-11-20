@@ -370,6 +370,39 @@ def fetch_snapshot():
     result_text.insert(tk.END, pprint.pformat(snap_shot))  # Format with pprint
 
 
+def fetch_calls():
+    """
+    Displays options chain data - calls
+    """
+    if chart_canvas:  # Delete any canvas if present
+        chart_canvas.get_tk_widget().destroy()
+
+    options_data = data.get_options_chain()
+
+    result_text.delete(1.0, tk.END)
+    result_text.insert(tk.END, 'Live Snapshot \n')
+
+    result_text.insert(tk.END, pprint.pformat(
+        options_data["calls"]))  # Format with pprint
+
+
+def fetch_puts():
+    """
+    Displays options chain data - puts
+    """
+
+    if chart_canvas:  # Delete any canvas if present
+        chart_canvas.get_tk_widget().destroy()
+
+    options_data = data.get_options_chain()
+
+    result_text.delete(1.0, tk.END)
+    result_text.insert(tk.END, 'Live Snapshot \n')
+
+    result_text.insert(tk.END, pprint.pformat(
+        options_data["puts"]))  # Format with pprint
+
+
 # Xreates a button
 Button(root, text='Fetch Technicals', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=fetch_technicals).place(x=200, y=40)
@@ -387,6 +420,12 @@ Button(root, text='Good to Buy?', bg='#8FBC8F', font=('arial', 12, 'normal'),
 Button(root, text='Live Snapshot', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=fetch_snapshot).place(x=750, y=80)
 
+Button(root, text='Get Calls', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=fetch_calls).place(x=750, y=120)
+
+Button(root, text='Get Puts', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=fetch_puts).place(x=750, y=160)
+
 
 Button(root, text='Fetch Data', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=fetch_stock_data).place(x=750, y=40)
@@ -401,7 +440,6 @@ Button(root, text='Nearest Neighbors', bg='#8FBC8F', font=('arial', 12, 'normal'
 
 Button(root, text='Neural Network', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=run_neural_network).place(x=10, y=160)
-
 
 Button(root, text='Set Stock', bg='#8FBC8F', font=('arial', 8, 'normal'),
        command=set_current_stock).place(x=600, y=47)
