@@ -353,30 +353,6 @@ def fetch_news_sentiment():
     result_text.insert(tk.END, pprint.pformat(techs))  # Format with pprint
 
 
-def good_to_buy():
-
-    global chart_canvas  # Declare chart_canvas as a global variable
-
-    if chart_canvas:  # Delete any canvas if present
-        chart_canvas.get_tk_widget().destroy()
-
-    gtb = data.get_good_to_buy()
-
-    status = ""
-
-    if gtb == 0:
-        status = "Based on sentiment, there is uncertantity within the market"
-    elif gtb > 0:
-        status = "Based on sentiment, technicals and headlines point to bullish momentum"
-    else:
-        status = "Based on sentiment, technicals and headlines point to bearish momentum"
-
-    result_text.delete(1.0, tk.END)
-    result_text.insert(tk.END, 'Is it a good time to buy?\n')
-
-    result_text.insert(tk.END, status)  # Format with pprint
-
-
 def fetch_snapshot():
     """
     Displays a live snapshot
