@@ -370,13 +370,18 @@ class StockAnalyzerController:
         return self._all_techs
 
     def get_news_sentiment(self):
-
+        """
+        Return sentiment of news
+        """
         if self._news is None and self._news_sentiment is None:
             self.process_news_sentiment()
 
         return self._news_sentiment
 
     def get_good_to_buy(self):
+        """
+        Return good to buy calculation 
+        """
         if self._good_to_buy == None:
             self.process_good_to_buy()
 
