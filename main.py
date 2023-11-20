@@ -965,6 +965,7 @@ class StockAnalyzerController:
         """
 
         # Chech if indicators have all been calculated
+
         if self._all_techs is None:
             self.calculate_all_techincals()
 
@@ -988,7 +989,7 @@ class StockAnalyzerController:
 
         self._all_sentiment = temp_holder
 
-        return temp_holder
+        return self._all_sentiment
 
     def process_good_to_buy(self):
         """

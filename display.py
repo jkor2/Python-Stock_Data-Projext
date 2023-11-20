@@ -39,7 +39,7 @@ Label(root, text='Time Frame', bg='#698B69',
 Label(root, text='Predictive Models', bg='#698B69',
       font=('arial', 12, 'bold')).place(x=10, y=10)
 
-Label(root, text='Technicals', bg='#698B69',
+Label(root, text='Sentiment', bg='#698B69',
       font=('arial', 12, 'bold')).place(x=200, y=10)
 
 Label(root, text='Stock Data', bg='#698B69',
@@ -300,7 +300,7 @@ def fetch_technicals():
     techs = data.get_all_techincals()
 
     result_text.delete(1.0, tk.END)
-    result_text.insert(tk.END, 'Technicals\n')
+    result_text.insert(tk.END, 'Sentiment\n')
 
     result_text.insert(tk.END, pprint.pformat(techs))  # Format with pprint
 
@@ -317,9 +317,22 @@ def fetch_sentiment_indicators():
     techs = data.process_sentiment()
 
     result_text.delete(1.0, tk.END)
-    result_text.insert(tk.END, 'Technical Sentiment\n')
+    result_text.insert(tk.END, 'Sentiment\n')
+
+    gtb = data.get_good_to_buy()
+
+    status = ""
+
+    if gtb == 0:
+        status = "Based on sentiment, there is uncertantity within the market"
+    elif gtb > 0:
+        status = "Based on sentiment, technicals and headlines point to bullish momentum"
+    else:
+        status = "Based on sentiment, technicals and headlines point to bearish momentum"
 
     result_text.insert(tk.END, pprint.pformat(techs))  # Format with pprint
+    result_text.insert(tk.END, "\n")
+    result_text.insert(tk.END, status)
 
 
 def fetch_news_sentiment():
@@ -347,10 +360,21 @@ def good_to_buy():
     if chart_canvas:  # Delete any canvas if present
         chart_canvas.get_tk_widget().destroy()
 
+    gtb = data.get_good_to_buy()
+
+    status = ""
+
+    if gtb == 0:
+        status = "Based on sentiment, there is uncertantity within the market"
+    elif gtb > 0:
+        status = "Based on sentiment, technicals and headlines point to bullish momentum"
+    else:
+        status = "Based on sentiment, technicals and headlines point to bearish momentum"
+
     result_text.delete(1.0, tk.END)
     result_text.insert(tk.END, 'Is it a good time to buy?\n')
 
-    result_text.insert(tk.END, "Under Construction")  # Format with pprint
+    result_text.insert(tk.END, status)  # Format with pprint
 
 
 def fetch_snapshot():
@@ -404,17 +428,14 @@ def fetch_puts():
 
 
 # Xreates a button
-Button(root, text='Fetch Technicals', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Technical Sentiment', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=fetch_technicals).place(x=200, y=40)
 
 Button(root, text='All Sentiment', bg='#8FBC8F', font=('arial', 12, 'normal'),
-       command=fetch_sentiment_indicators).place(x=200, y=80)
+       command=fetch_sentiment_indicators).place(x=200, y=120)
 
 Button(root, text='News Sentiment', bg='#8FBC8F', font=('arial', 12, 'normal'),
-       command=fetch_news_sentiment).place(x=200, y=120)
-
-Button(root, text='Good to Buy?', bg='#8FBC8F', font=('arial', 12, 'normal'),
-       command=good_to_buy).place(x=200, y=160)
+       command=fetch_news_sentiment).place(x=200, y=80)
 
 
 Button(root, text='Live Snapshot', bg='#8FBC8F', font=('arial', 12, 'normal'),
