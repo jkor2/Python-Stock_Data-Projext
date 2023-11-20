@@ -376,6 +376,12 @@ class StockAnalyzerController:
 
         return self._news_sentiment
 
+    def get_good_to_buy(self):
+        if self._good_to_buy == None:
+            self.process_good_to_buy()
+
+        return self._good_to_buy
+
     # Predicitive Models ----------------------------------------------------------------------------
     def neural_network(self, root):
         """
