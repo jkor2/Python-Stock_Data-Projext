@@ -46,6 +46,8 @@ class StockAnalyzerController:
         self._news_sentiment = None
         self._technical_sentiment = None
         self._news = None
+        self._good_to_buy = None
+        self._all_sentiment = None
 
     # FETCH Methods ------------------------------------------------------------------------------
 
@@ -139,6 +141,8 @@ class StockAnalyzerController:
         self._technical_sentiment = None
         self._news_sentiment = None
         self._news = None
+        self._all_sentiment = None
+        self._good_to_buy = None
         self._stock = str(stock)
         self.fetch_data_range()
 
@@ -903,7 +907,6 @@ class StockAnalyzerController:
             result["status"] = "Bearish"
         else:
             result["status"] = "Neutral"
-        pprint(result)
 
         self._stochastic = result
 
@@ -951,7 +954,7 @@ class StockAnalyzerController:
 
     def process_sentiment(self):
         """
-        Processes all technical indicators 
+        Processes all technical and news sentiment  
         and returns bearish, bullish, neutral
         """
 
@@ -977,9 +980,34 @@ class StockAnalyzerController:
         for idx, value in enumerate(news):
             temp_holder[f"Article {idx + 1}"] = news[value]["status"]
 
-        pprint(temp_holder)
+        self._all_sentiment = temp_holder
 
         return temp_holder
+
+    def process_good_to_buy(self):
+        """
+        Determine if it is a good time to buy, 
+        neutral = 0
+        bearish = -1
+        bullish = 1
+        """
+
+        if self._all_sentiment is None:
+            self.process_sentiment()
+
+        all_sentiment = self._all_sentiment
+
+        total = 0
+
+        for i in all_sentiment:
+            if all_sentiment[i] == "Bullish":
+                print("Bullish")
+                total += 1
+            elif all_sentiment[i] == "Bearish":
+                print("Bearish")
+                total -= 1
+
+        self._good_to_buy = total
 
     def process_news_sentiment(self):
         """
@@ -1018,7 +1046,6 @@ class StockAnalyzerController:
                     "status": status
                 }
 
-            pprint(temp_sent_object)
             self._news_sentiment = temp_sent_object
         else:
             self._news_sentiment = None
@@ -1028,4 +1055,4 @@ class StockAnalyzerController:
 if __name__ == "__main__":
 
     controller = StockAnalyzerController()
-    controller.process_sentiment()
+    controller.process_good_to_buy()
