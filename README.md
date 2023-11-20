@@ -44,7 +44,7 @@ Sentiment analysis is a key feature, incorporating the calculation of technical 
     
 - **Sentiment Analysis:**
 
-  - Calculate a sentiment based on technical indicators 
+  - Calculate sentiment based on technical indicators 
   - Calculate sentiment based on news headlines using VectorSentiment
   
 
