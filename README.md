@@ -17,7 +17,7 @@ Sentiment analysis is a key feature, incorporating the calculation of technical 
 ## Key Features
 
 - **Predictive Models:**
-  - Implement predictive models like K-Nearest Neighbors, Random Forest Regression, and Linear Regression to predict stock prices.
+  - Implement predictive models like K-Nearest Neighbors, Random Forest Regression, Linear Regression, and MLP Regressor to predict stock prices.
 
 - **Data Fetching:**
 
@@ -40,4 +40,12 @@ Sentiment analysis is a key feature, incorporating the calculation of technical 
 - **Technical Indicators:**
 
   - Calculate a variety of technical indicators 
-  - Calculate the "Best" time to purschase a stock based on the indicators sentiment *not financial advice
+  - Calculate the "Best" time to purschase a stock based on the indicators sentiment
+    
+- **Sentiment Analysis:**
+
+  - Calculate a sentiment based on technical indicators 
+  - Calculate sentiment based on news headlines using VectorSentiment
+  
+
+**Not financial advice**
