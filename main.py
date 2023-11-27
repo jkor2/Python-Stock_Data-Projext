@@ -12,6 +12,8 @@ import pandas as pd
 from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import MinMaxScaler
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -437,6 +439,36 @@ class StockAnalyzerController:
 
         return canvas
 
+    def neural_network_accuracy_test(self):
+        # Fetch and process data
+        data = yf.Ticker(self._stock).history(interval="1d", period='max')
+        self.set_ml_data(data)
+        data = self._ml_data
+        close_prices = data['Close'].values
+        print("Cloeses:", len(close_prices))
+        # Train-test split
+        X_train, X_test, y_train, y_test = train_test_split(
+            np.arange(1, len(close_prices) + 1).reshape(-1, 1),
+            close_prices.ravel(),
+            test_size=0.2,
+            random_state=42
+        )
+
+        # Train the neural network model
+        model = MLPRegressor(hidden_layer_sizes=(
+            120,), solver="adam", random_state=1, max_iter=500)
+        model.fit(X_train, y_train)
+
+        # Predict on the test set
+        y_pred = model.predict(X_test)
+
+        # Calculate and print metrics
+        mse = mean_squared_error(y_test, y_pred)
+        r2 = r2_score(y_test, y_pred)
+
+        print(f'Mean Squared Error: {mse}')
+        print(f'R-squared: {r2}')
+
     def nearest_nehibor(self, root):
         """
         Utliszed library to implement KNeighbors Regression 
@@ -489,6 +521,32 @@ class StockAnalyzerController:
         canvas.draw()
 
         return canvas
+
+    def knn_accuracy_test(self):
+        # Pull Data
+        data = yf.Ticker(self._stock).history(interval="1d", period='5y')
+        self.set_ml_data(data)
+        data = self._ml_data
+        close_prices = data['Close'].values
+
+        # Split the data into training and testing sets
+        X_train, X_test, y_train, y_test = train_test_split(
+            close_prices[:-1].reshape(-1, 1), close_prices[1:], test_size=0.2, random_state=42
+        )
+
+        # Initialize and train the KNN model
+        model = KNeighborsRegressor(n_neighbors=100)
+        model.fit(X_train, y_train)
+
+        # Predict on the test set
+        y_pred = model.predict(X_test)
+
+        # Calculate and print metrics
+        mse = mean_squared_error(y_test, y_pred)
+        r2 = r2_score(y_test, y_pred)
+
+        print(f'Mean Squared Error: {mse}')
+        print(f'R-squared: {r2}')
 
     def random_forest_regression(self, root):
         """
@@ -1067,4 +1125,4 @@ class StockAnalyzerController:
 if __name__ == "__main__":
 
     controller = StockAnalyzerController()
-    controller.process_good_to_buy()
+    controller.knn_accuracy_test()
