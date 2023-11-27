@@ -2,13 +2,9 @@ import tkinter as tk
 from tkinter import *
 import pprint
 
-
 import main
 
-# this is a function to get the user input from the text input box
-
 data = main.StockAnalyzerController()
-
 
 def getInputBoxValue():
     """
@@ -17,7 +13,6 @@ def getInputBoxValue():
     userInput = Stock.get()
     return userInput
 
-
 # Init root
 root = Tk()
 
@@ -25,7 +20,6 @@ root = Tk()
 root.geometry('1000x750')
 root.configure(background='#1E1E1E')
 root.title('Main')
-
 
 # Creates the Lables
 Label(root, text='Stock Analysis', bg='#1E1E1E', fg='#FFFFFF',
