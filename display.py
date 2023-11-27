@@ -25,36 +25,36 @@ root = Tk()
 
 # cXeates the main window
 root.geometry('1000x750')
-root.configure(background='#698B69')
+root.configure(background='#1E1E1E')
 root.title('Main')
 
 
 # Creates the Lables
-Label(root, text='Stock Analysis', bg='#698B69',
+Label(root, text='Stock Analysis', bg='#1E1E1E', fg='#FFFFFF',
       font=('arial', 20, 'bold')).place(x=415, y=5)
 
-Label(root, text='Time Frame', bg='#698B69',
+Label(root, text='Time Frame', bg='#1E1E1E',fg='#FFFFFF',
       font=('arial', 10, 'bold')).place(x=45, y=290)
 
-Label(root, text='Predictive Models', bg='#698B69',
+Label(root, text='Predictive Models', bg='#1E1E1E',fg='#FFFFFF',
       font=('arial', 12, 'bold')).place(x=10, y=10)
 
-Label(root, text='Sentiment', bg='#698B69',
+Label(root, text='Sentiment', bg='#1E1E1E',fg='#FFFFFF',
       font=('arial', 12, 'bold')).place(x=200, y=10)
 
-Label(root, text='Stock Data', bg='#698B69',
+Label(root, text='Stock Data', bg='#1E1E1E',fg='#FFFFFF',
       font=('arial', 12, 'bold')).place(x=725, y=10)
 
-Label(root, text='Stock Info', bg='#698B69',
+Label(root, text='Stock Info', bg='#1E1E1E',fg='#FFFFFF',
       font=('arial', 12, 'bold')).place(x=875, y=10)
 
 
-curr_stock = Label(root, text='Current Stock: ' + data.get_current_stock(), bg='#698B69',
+curr_stock = Label(root, text='Current Stock: ' + data.get_current_stock(), bg='#1E1E1E',fg='#FFFFFF',
                    font=('arial', 10, 'bold'))
 curr_stock.place(x=450, y=80)
 
 
-curr_time_frame = Label(root, text='Current Time Frame: ' + data.get_current_time_frame(), bg='#698B69',
+curr_time_frame = Label(root, text='Current Time Frame: ' + data.get_current_time_frame(), bg='#1E1E1E',fg='#FFFFFF',
                         font=('arial', 10, 'bold'))
 curr_time_frame.place(x=450, y=100)
 
@@ -65,7 +65,7 @@ Stock.place(x=450, y=50)
 
 
 # Create a Text widget for displaying the result
-result_text = Text(root, bg='#9BCD9B', font=('arial', 10),
+result_text = Text(root, bg='#1E1E1E', fg='#FFFFFF', font=('arial', 10),
                    wrap='word', height=30, width=110)
 result_text.place(x=150, y=200)
 
@@ -92,23 +92,23 @@ def radio_button_selected():
 
 
 # Create radio buttons
-radio_button1 = Radiobutton(root, bg="#698B69", text="1 Day", variable=selected_option,
+radio_button1 = Radiobutton(root, bg="#1E1E1E",selectcolor="#3498db" , fg='#FFFFFF',text="1 Day", variable=selected_option,
                             value="1d", command=radio_button_selected)
-radio_button2 = Radiobutton(root, bg="#698B69", text="5 Day", variable=selected_option,
+radio_button2 = Radiobutton(root, bg="#1E1E1E",  selectcolor="#3498db" ,fg='#FFFFFF',text="5 Day", variable=selected_option,
                             value="5d", command=radio_button_selected)
-radio_button3 = Radiobutton(root, bg="#698B69", text="1 Month", variable=selected_option,
+radio_button3 = Radiobutton(root, bg="#1E1E1E",selectcolor="#3498db" ,  fg='#FFFFFF',text="1 Month", variable=selected_option,
                             value="1mo", command=radio_button_selected)
-radio_button4 = Radiobutton(root, bg="#698B69", text="3 month", variable=selected_option,
+radio_button4 = Radiobutton(root, bg="#1E1E1E", selectcolor="#3498db" , fg='#FFFFFF',text="3 month", variable=selected_option,
                             value="3mo", command=radio_button_selected)
-radio_button5 = Radiobutton(root, bg="#698B69", text="6 Month", variable=selected_option,
+radio_button5 = Radiobutton(root, bg="#1E1E1E", selectcolor="#3498db" , fg='#FFFFFF',text="6 Month", variable=selected_option,
                             value="6mo", command=radio_button_selected)
-radio_button6 = Radiobutton(root, bg="#698B69", text="1 Year", variable=selected_option,
+radio_button6 = Radiobutton(root, bg="#1E1E1E",selectcolor="#3498db" , fg='#FFFFFF', text="1 Year", variable=selected_option,
                             value="1y", command=radio_button_selected)
-radio_button7 = Radiobutton(root, bg="#698B69", text="5 Year", variable=selected_option,
+radio_button7 = Radiobutton(root, bg="#1E1E1E", selectcolor="#3498db" , fg='#FFFFFF',text="5 Year", variable=selected_option,
                             value="5y", command=radio_button_selected)
-radio_button8 = Radiobutton(root, bg="#698B69", text="YTD", variable=selected_option,
+radio_button8 = Radiobutton(root, bg="#1E1E1E", selectcolor="#3498db" , fg='#FFFFFF',text="YTD", variable=selected_option,
                             value="ytd", command=radio_button_selected)
-radio_button9 = Radiobutton(root, bg="#698B69", text="Max", variable=selected_option,
+radio_button9 = Radiobutton(root, bg="#1E1E1E", selectcolor="#3498db" , fg='#FFFFFF',text="Max", variable=selected_option,
                             value="MAX", command=radio_button_selected)
 
 
@@ -404,52 +404,52 @@ def fetch_puts():
 
 
 # Xreates a button
-Button(root, text='Technical Sentiment', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Technical Sentiment', width='15',bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=fetch_technicals).place(x=200, y=40)
 
-Button(root, text='All Sentiment', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='All Sentiment', width='15',bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=fetch_sentiment_indicators).place(x=200, y=120)
 
-Button(root, text='News Sentiment', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='News Sentiment', width='15',bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=fetch_news_sentiment).place(x=200, y=80)
 
 
-Button(root, text='Live Snapshot', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Live Snapshot', width='15',bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=fetch_snapshot).place(x=700, y=80)
 
-Button(root, text='Get Calls', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Get Calls', width='15',bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=fetch_calls).place(x=700, y=120)
 
-Button(root, text='Get Puts', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Get Puts', width='15',bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=fetch_puts).place(x=700, y=160)
 
 
-Button(root, text='Fetch Data', width='15', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Fetch Data', width='15', bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=fetch_stock_data).place(x=700, y=40)
 
-Button(root, text='Linear Regression', width='15', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Linear Regression', width='15', bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=run_regression_mode).place(x=10, y=40)
-Button(root, text='Random Forest', width='15', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Random Forest', width='15', bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=run_random_forest).place(x=10, y=80)
 
-Button(root, text='Nearest Neighbors', width='15', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Nearest Neighbors', width='15', bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=run_nearest_neighbor).place(x=10, y=120)
 
-Button(root, text='Neural Network', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Neural Network', width='15',bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=run_neural_network).place(x=10, y=160)
 
-Button(root, text='Set Stock', bg='#8FBC8F', font=('arial', 8, 'normal'),
+Button(root, text='Set Stock', bg='#353535', font=('arial', 8, 'normal'), fg='#FFFFFF',
        command=set_current_stock).place(x=600, y=47)
 
-Button(root, text='Fetch Info', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Fetch Info', width='15',bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=get_stock_info).place(x=850, y=40)
 
-Button(root, text='Get Chart', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Get Chart', bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=get_chart).place(x=420, y=135)
-Button(root, text='Remove Chart',bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Remove Chart',bg='#353535', font=('arial', 12, 'normal'), fg='#FFFFFF',
        command=remove_chart).place(x=510, y=135)
 
 root.resizable(False, False)  # Makes not resiazble
-scrollbar = Scrollbar(root, orient="vertical")  # Init vertical scroll bar
+scrollbar = Scrollbar(root, orient="vertical", bg="#1E1E1E")  # Init vertical scroll bar
 
 root.mainloop()
