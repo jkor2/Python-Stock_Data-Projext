@@ -1,7 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
-from tkinter import *
-from tabulate import tabulate
 import pprint
 
 
