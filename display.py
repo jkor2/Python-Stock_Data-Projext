@@ -43,10 +43,10 @@ Label(root, text='Sentiment', bg='#698B69',
       font=('arial', 12, 'bold')).place(x=200, y=10)
 
 Label(root, text='Stock Data', bg='#698B69',
-      font=('arial', 12, 'bold')).place(x=750, y=10)
+      font=('arial', 12, 'bold')).place(x=725, y=10)
 
 Label(root, text='Stock Info', bg='#698B69',
-      font=('arial', 12, 'bold')).place(x=900, y=10)
+      font=('arial', 12, 'bold')).place(x=875, y=10)
 
 
 curr_stock = Label(root, text='Current Stock: ' + data.get_current_stock(), bg='#698B69',
@@ -404,49 +404,49 @@ def fetch_puts():
 
 
 # Xreates a button
-Button(root, text='Technical Sentiment', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Technical Sentiment', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=fetch_technicals).place(x=200, y=40)
 
-Button(root, text='All Sentiment', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='All Sentiment', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=fetch_sentiment_indicators).place(x=200, y=120)
 
-Button(root, text='News Sentiment', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='News Sentiment', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=fetch_news_sentiment).place(x=200, y=80)
 
 
-Button(root, text='Live Snapshot', bg='#8FBC8F', font=('arial', 12, 'normal'),
-       command=fetch_snapshot).place(x=750, y=80)
+Button(root, text='Live Snapshot', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=fetch_snapshot).place(x=700, y=80)
 
-Button(root, text='Get Calls', bg='#8FBC8F', font=('arial', 12, 'normal'),
-       command=fetch_calls).place(x=750, y=120)
+Button(root, text='Get Calls', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=fetch_calls).place(x=700, y=120)
 
-Button(root, text='Get Puts', bg='#8FBC8F', font=('arial', 12, 'normal'),
-       command=fetch_puts).place(x=750, y=160)
+Button(root, text='Get Puts', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=fetch_puts).place(x=700, y=160)
 
 
-Button(root, text='Fetch Data', bg='#8FBC8F', font=('arial', 12, 'normal'),
-       command=fetch_stock_data).place(x=750, y=40)
+Button(root, text='Fetch Data', width='15', bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=fetch_stock_data).place(x=700, y=40)
 
-Button(root, text='Linear Regression', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Linear Regression', width='15', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=run_regression_mode).place(x=10, y=40)
-Button(root, text='Random Forest', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Random Forest', width='15', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=run_random_forest).place(x=10, y=80)
 
-Button(root, text='Nearest Neighbors', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Nearest Neighbors', width='15', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=run_nearest_neighbor).place(x=10, y=120)
 
-Button(root, text='Neural Network', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Neural Network', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=run_neural_network).place(x=10, y=160)
 
 Button(root, text='Set Stock', bg='#8FBC8F', font=('arial', 8, 'normal'),
        command=set_current_stock).place(x=600, y=47)
 
-Button(root, text='Fetch Info', bg='#8FBC8F', font=('arial', 12, 'normal'),
-       command=get_stock_info).place(x=900, y=40)
+Button(root, text='Fetch Info', width='15',bg='#8FBC8F', font=('arial', 12, 'normal'),
+       command=get_stock_info).place(x=850, y=40)
 
 Button(root, text='Get Chart', bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=get_chart).place(x=420, y=135)
-Button(root, text='Remove Chart', bg='#8FBC8F', font=('arial', 12, 'normal'),
+Button(root, text='Remove Chart',bg='#8FBC8F', font=('arial', 12, 'normal'),
        command=remove_chart).place(x=510, y=135)
 
 root.resizable(False, False)  # Makes not resiazble
