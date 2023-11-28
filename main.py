@@ -599,6 +599,35 @@ class StockAnalyzerController:
         canvas.draw()
 
         return canvas
+    
+    def random_forest_regressor_test(self):
+        """
+        Testing MSE and R-Squared of random forest regressor     
+        """
+
+        # Pull Data
+        data = yf.Ticker(self._stock).history(interval="1d", period='5y')
+        self.set_ml_data(data)
+        data = self._ml_data
+        close_prices = data['Close'].values
+
+        # Split the data into training and testing sets
+        X_train, X_test, y_train, y_test = train_test_split(
+            close_prices[:-1].reshape(-1, 1), close_prices[1:], test_size=0.2, random_state=42
+        )
+        # Initializing and training the random forest regressor model
+        model = RandomForestRegressor(n_estimators=100, random_state=1)
+        model.fit(X_train, y_train)
+
+        # Predict on the test set
+        y_pred = model.predict(X_test)
+
+        # Calculate and print metrics
+        mse = mean_squared_error(y_test, y_pred)
+        r2 = r2_score(y_test, y_pred)
+
+        print(f'Mean Squared Error: {mse}')
+        print(f'R-squared: {r2}')
 
     def linear_regression(self, root):
         """
@@ -1125,4 +1154,4 @@ class StockAnalyzerController:
 if __name__ == "__main__":
 
     controller = StockAnalyzerController()
-    controller.knn_accuracy_test()
+    controller.random_forest_regressor_test()
